@@ -6,3 +6,4 @@ A personal Streamlit dashboard for tracking projects, tasks, next actions, deadl
 
 ```bash
 streamlit run app.py
+```

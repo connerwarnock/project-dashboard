@@ -5,11 +5,11 @@ from datetime import datetime
 PROJECTS_CSV = "projects.csv"
 TASKS_CSV = "tasks.csv"
 
-PROJECT_STATUSES = ["Backlog", "Active", "Paused", "Needs Review", "Ready to Publish", "Shipped", "Archived"]
+PROJECT_STATUSES = ["Backlog", "Active", "Paused", "Needs Review", "Ready to Publish", "Shipped", "Archived", "Reference"]
 TASK_STATUSES = ["Not Started", "Doing", "Blocked", "Paused", "Done"]
 PRIORITIES = ["High", "Medium", "Low"]
 
-st.set_page_config(page_title="Project Dashboard", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Project Dashboard", page_icon=":bar_chart:", layout="wide")
 
 st.title("Project Dashboard")
 st.caption("A simple command center for tracking projects, tasks, and publishing ideas.")
@@ -41,15 +41,15 @@ with tab1:
         }
     )
 
-    if st.button("Save task changes", key="save_tasks_button"):
-        edited_tasks["Due Date"] = (
-            pd.to_datetime(edited_tasks["Due Date"], errors="coerce")
+    if st.button("Save project changes", key="save_projects_button"):
+        edited_projects["Last Updated"] = (
+            pd.to_datetime(edited_projects["Last Updated"], errors="coerce")
             .dt.strftime("%Y-%m-%d")
             .fillna("")
         )
 
-        edited_tasks.to_csv(TASKS_CSV, index=False)
-        st.success("Task changes saved.")
+        edited_projects.to_csv(PROJECTS_CSV, index=False)
+        st.success("Project changes saved.")
 
 with tab2:
     st.subheader("Edit Tasks")
@@ -72,7 +72,7 @@ with tab2:
         }
     )    
 
-    if st.button("Save project changes", key="save_projects_button"):
+    if st.button("Save task changes", key="save_tasks_button"):
         edited_tasks["Due Date"] = (
             pd.to_datetime(edited_tasks["Due Date"], errors="coerce")
             .dt.strftime("%Y-%m-%d")
@@ -102,6 +102,23 @@ with tab3:
     col2.metric("Open Tasks", len(open_tasks))
     col3.metric("High-Priority Open Tasks", len(open_tasks[open_tasks["Priority"] == "High"]))
     col4.metric("Overdue Tasks", len(overdue_tasks))
+
+    st.subheader("Projects Overview")
+
+    projects_overview = projects[projects["Status"] != "Archived"].copy()
+    projects_overview["Last Updated"] = (
+        pd.to_datetime(projects_overview["Last Updated"], errors="coerce")
+        .dt.strftime("%Y-%m-%d")
+        .fillna("")
+    )
+
+    st.dataframe(
+        projects_overview[
+            ["Project", "Category", "Status", "Priority", "Stage", "Next Action", "Last Updated"]
+        ],
+        use_container_width=True,
+        hide_index=True
+    )
 
     st.subheader("Stale Projects")
 
