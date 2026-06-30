@@ -5,6 +5,9 @@ A personal Streamlit dashboard for tracking projects, tasks, publishing outputs,
 The visual system and Warm Future color palette are documented in
 [`DESIGN.md`](DESIGN.md).
 
+Continuation notes for future ChatGPT and Codex sessions are in
+[`HANDOFF.md`](HANDOFF.md).
+
 Live data is stored in these Google Sheets worksheets:
 
 - `Projects`
