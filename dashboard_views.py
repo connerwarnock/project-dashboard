@@ -5,9 +5,19 @@ from config import (
     PRIORITIES,
     PROJECT_OVERVIEW_COLUMNS,
     PROJECT_STATUSES,
+    PUBLISHING_FORMATS,
+    PUBLISHING_STATUSES,
+    TARGET_PLATFORMS,
     TASK_STATUSES,
+    VISUAL_READY_OPTIONS,
 )
-from data_utils import format_date_column, parse_date_column, save_projects, save_tasks
+from data_utils import (
+    format_date_column,
+    parse_date_column,
+    save_projects,
+    save_publishing_queue,
+    save_tasks,
+)
 
 
 def render_edit_projects(projects):
@@ -58,7 +68,43 @@ def render_edit_tasks(projects, tasks):
         st.success("Task changes saved.")
 
 
-def render_dashboard(projects, tasks):
+def render_publishing_queue(projects, publishing_queue):
+    st.subheader("Publishing Queue")
+
+    project_options = get_project_options(projects)
+    queue_for_edit = parse_date_column(publishing_queue, "Publish Date")
+
+    edited_queue = st.data_editor(
+        queue_for_edit,
+        key="publishing_queue_editor",
+        use_container_width=True,
+        num_rows="dynamic",
+        hide_index=True,
+        column_config={
+            "Project": st.column_config.SelectboxColumn("Project", options=project_options),
+            "Format": st.column_config.SelectboxColumn("Format", options=PUBLISHING_FORMATS),
+            "Status": st.column_config.SelectboxColumn("Status", options=PUBLISHING_STATUSES),
+            "Visual Ready": st.column_config.SelectboxColumn(
+                "Visual Ready",
+                options=VISUAL_READY_OPTIONS,
+            ),
+            "Target Platform": st.column_config.SelectboxColumn(
+                "Target Platform",
+                options=TARGET_PLATFORMS,
+            ),
+            "Publish Date": st.column_config.DateColumn(
+                "Publish Date",
+                format="YYYY-MM-DD",
+            ),
+        },
+    )
+
+    if st.button("Save publishing queue", key="save_publishing_queue_button"):
+        save_publishing_queue(edited_queue)
+        st.success("Publishing queue saved.")
+
+
+def render_dashboard(projects, tasks, publishing_queue):
     project_options = get_project_options(projects)
     tasks = tasks.copy()
     tasks["Due Date Parsed"] = pd.to_datetime(tasks["Due Date"], errors="coerce")
@@ -76,6 +122,7 @@ def render_dashboard(projects, tasks):
     ].sort_values("Due Date Parsed")
 
     render_metrics(active_count, open_tasks, overdue_tasks)
+    render_publishing_summary(publishing_queue)
     render_projects_overview(projects)
     render_stale_projects(projects, today)
     render_next_actions(open_tasks)
@@ -93,6 +140,21 @@ def render_metrics(active_count, open_tasks, overdue_tasks):
     col2.metric("Open Tasks", len(open_tasks))
     col3.metric("High-Priority Open Tasks", len(open_tasks[open_tasks["Priority"] == "High"]))
     col4.metric("Overdue Tasks", len(overdue_tasks))
+
+
+def render_publishing_summary(publishing_queue):
+    st.subheader("Publishing Queue Summary")
+
+    unpublished = publishing_queue[
+        ~publishing_queue["Status"].isin(["Published", "Archived"])
+    ]
+    ready = publishing_queue[publishing_queue["Status"] == "Ready"]
+    published = publishing_queue[publishing_queue["Status"] == "Published"]
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Unpublished Outputs", len(unpublished))
+    col2.metric("Ready to Publish", len(ready))
+    col3.metric("Published Outputs", len(published))
 
 
 def render_projects_overview(projects):

@@ -1,5 +1,6 @@
 PROJECTS_CSV = "projects.csv"
 TASKS_CSV = "tasks.csv"
+PUBLISHING_QUEUE_CSV = "publishing_queue.csv"
 
 PROJECT_STATUSES = [
     "Backlog",
@@ -13,6 +14,25 @@ PROJECT_STATUSES = [
 ]
 TASK_STATUSES = ["Not Started", "Doing", "Blocked", "Paused", "Done"]
 PRIORITIES = ["High", "Medium", "Low"]
+
+PUBLISHING_FORMATS = [
+    "Article",
+    "X Thread",
+    "X Post",
+    "Chart",
+    "Dashboard",
+    "Other",
+]
+PUBLISHING_STATUSES = [
+    "Idea",
+    "Drafting",
+    "Needs Visual",
+    "Ready",
+    "Published",
+    "Archived",
+]
+VISUAL_READY_OPTIONS = ["Yes", "No", "Not Needed"]
+TARGET_PLATFORMS = ["X", "Substack", "GitHub", "Streamlit", "Other"]
 
 PROJECT_OVERVIEW_COLUMNS = [
     "Project",
