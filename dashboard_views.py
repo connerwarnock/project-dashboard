@@ -19,7 +19,12 @@ from data_utils import (
     save_tasks,
 )
 from sheets_utils import GoogleSheetsError
-from ui_styles import section_card, style_status_badges
+from ui_styles import (
+    render_dashboard_hero,
+    render_empty_state,
+    section_card,
+    style_status_badges,
+)
 
 
 def render_edit_projects(projects):
@@ -132,6 +137,7 @@ def render_dashboard(projects, tasks, publishing_queue):
         & (open_tasks["Due Date Parsed"] >= today)
     ].sort_values("Due Date Parsed")
 
+    render_dashboard_hero()
     render_metrics(active_count, open_tasks, overdue_tasks)
     render_publishing_summary(publishing_queue)
     render_projects_overview(projects)
@@ -145,6 +151,18 @@ def get_project_options(projects):
     return projects["Project"].dropna().unique().tolist()
 
 
+def render_dashboard_table(card, dataframe, empty_message):
+    if dataframe.empty:
+        render_empty_state(card, empty_message)
+        return
+
+    card.dataframe(
+        style_status_badges(dataframe),
+        use_container_width=True,
+        hide_index=True,
+    )
+
+
 def render_metrics(active_count, open_tasks, overdue_tasks):
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Active Projects", active_count)
@@ -155,6 +173,7 @@ def render_metrics(active_count, open_tasks, overdue_tasks):
 
 def render_publishing_summary(publishing_queue):
     card = section_card("Publishing Queue Summary")
+    card.caption("A quick pulse on what is moving toward publication.")
 
     unpublished = publishing_queue[
         ~publishing_queue["Status"].isin(["Published", "Archived"])
@@ -170,19 +189,21 @@ def render_publishing_summary(publishing_queue):
 
 def render_projects_overview(projects):
     card = section_card("Projects Overview")
+    card.caption("All current projects at a glance.")
 
     projects_overview = projects[projects["Status"] != "Archived"].copy()
     projects_overview = format_date_column(projects_overview, "Last Updated")
 
-    card.dataframe(
-        style_status_badges(projects_overview[PROJECT_OVERVIEW_COLUMNS]),
-        use_container_width=True,
-        hide_index=True,
+    render_dashboard_table(
+        card,
+        projects_overview[PROJECT_OVERVIEW_COLUMNS],
+        "No current projects to show yet.",
     )
 
 
 def render_stale_projects(projects, today):
     card = section_card("Stale Projects")
+    card.caption("Active work not updated in the last 14 days.")
 
     projects_with_dates = projects.copy()
     projects_with_dates["Last Updated Parsed"] = pd.to_datetime(
@@ -198,17 +219,16 @@ def render_stale_projects(projects, today):
         & (projects_with_dates["Last Updated Parsed"] < stale_cutoff)
     ]
 
-    card.dataframe(
-        style_status_badges(
-            stale_projects.drop(columns=["Last Updated Parsed"], errors="ignore")
-        ),
-        use_container_width=True,
-        hide_index=True,
+    render_dashboard_table(
+        card,
+        stale_projects.drop(columns=["Last Updated Parsed"], errors="ignore"),
+        "No stale projects. Everything is moving.",
     )
 
 
 def render_next_actions(open_tasks):
     card = section_card("Next Actions")
+    card.caption("High- and medium-priority work that needs attention.")
 
     next_actions = open_tasks[
         open_tasks["Status"].isin(["Not Started", "Doing", "Blocked"])
@@ -226,31 +246,34 @@ def render_next_actions(open_tasks):
         na_position="last",
     ).drop(columns=["Priority Rank", "Status Rank", "Due Date Parsed"])
 
-    card.dataframe(
-        style_status_badges(next_actions),
-        use_container_width=True,
-        hide_index=True,
+    render_dashboard_table(
+        card,
+        next_actions,
+        "No priority next actions right now.",
     )
 
 
 def render_deadlines(overdue_tasks, upcoming_tasks):
     overdue_card = section_card("Overdue Tasks")
-    overdue_card.dataframe(
-        style_status_badges(overdue_tasks.drop(columns=["Due Date Parsed"])),
-        use_container_width=True,
-        hide_index=True,
+    overdue_card.caption("Open tasks that have passed their due date.")
+    render_dashboard_table(
+        overdue_card,
+        overdue_tasks.drop(columns=["Due Date Parsed"]),
+        "No overdue tasks. Nice.",
     )
 
     upcoming_card = section_card("Upcoming Deadlines")
-    upcoming_card.dataframe(
-        style_status_badges(upcoming_tasks.drop(columns=["Due Date Parsed"])),
-        use_container_width=True,
-        hide_index=True,
+    upcoming_card.caption("Open tasks with due dates ahead.")
+    render_dashboard_table(
+        upcoming_card,
+        upcoming_tasks.drop(columns=["Due Date Parsed"]),
+        "No upcoming deadlines on the calendar.",
     )
 
 
 def render_project_detail(projects, tasks, project_options):
     card = section_card("Project Detail")
+    card.caption("Inspect the current focus and task list for one project.")
 
     selected_project_detail = card.selectbox(
         "Choose a project to inspect",
@@ -273,10 +296,8 @@ def render_project_detail(projects, tasks, project_options):
         card.write(f"**Last Updated:** {project_info.get('Last Updated', '')}")
 
         card.write("**Project Tasks**")
-        card.dataframe(
-            style_status_badges(
-                project_tasks.drop(columns=["Due Date Parsed"], errors="ignore")
-            ),
-            use_container_width=True,
-            hide_index=True,
+        render_dashboard_table(
+            card,
+            project_tasks.drop(columns=["Due Date Parsed"], errors="ignore"),
+            "No tasks for this project yet.",
         )

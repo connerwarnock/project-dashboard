@@ -75,6 +75,71 @@ def apply_warm_future_theme():
             line-height: 1.5;
         }
 
+        .warm-command-center {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 0.3rem 0 1.1rem;
+            padding: 1rem 1.1rem;
+            background-color: var(--warm-surface);
+            border: 1px solid var(--warm-border);
+            border-left: 4px solid var(--warm-turquoise);
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(71, 56, 50, 0.045);
+        }
+
+        .warm-command-center h2 {
+            margin: 0 0 0.3rem;
+            font-size: 1.35rem;
+            font-weight: 650;
+            line-height: 1.3;
+        }
+
+        .warm-command-center p {
+            margin: 0;
+            color: var(--warm-muted);
+            font-size: 0.92rem;
+            line-height: 1.45;
+        }
+
+        .warm-state-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 0.4rem;
+            max-width: 360px;
+        }
+
+        .warm-state-badge {
+            padding: 0.24rem 0.55rem;
+            color: var(--warm-text);
+            background-color: #F5ECE7;
+            border: 1px solid var(--warm-border);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.25;
+            white-space: nowrap;
+        }
+
+        .warm-state-badge.is-active,
+        .warm-state-badge.is-ready,
+        .warm-state-badge.is-published {
+            background-color: #DDF7F5;
+            border-color: #B7E9E5;
+        }
+
+        .warm-state-badge.is-paused {
+            background-color: #F5ECE7;
+        }
+
+        .warm-state-badge.is-blocked,
+        .warm-state-badge.is-overdue {
+            background-color: #FBE6EC;
+            border-color: #F3C4D1;
+        }
+
         [data-testid="stMetric"] {
             position: relative;
             min-height: 116px;
@@ -130,7 +195,7 @@ def apply_warm_future_theme():
 
         [data-testid="stVerticalBlockBorderWrapper"] {
             padding: 1rem;
-            margin: 0.35rem 0 0.85rem;
+            margin: 0.45rem 0 1.05rem;
             background-color: var(--warm-surface);
             border-color: var(--warm-border) !important;
             border-radius: 8px;
@@ -145,6 +210,33 @@ def apply_warm_future_theme():
             font-size: 1.2rem;
             font-weight: 600;
             line-height: 1.35;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] {
+            margin: -0.35rem 0 0.55rem;
+            color: var(--warm-muted);
+        }
+
+        .warm-empty-state {
+            padding: 0.9rem 1rem;
+            color: var(--warm-muted);
+            background-color: rgba(99, 213, 208, 0.07);
+            border: 1px dashed #B7E9E5;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        @media (max-width: 700px) {
+            .warm-command-center {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .warm-state-list {
+                justify-content: flex-start;
+                max-width: none;
+            }
         }
 
         [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMetric"] {
@@ -199,6 +291,28 @@ def render_app_header(title, subtitle):
     )
 
 
+def render_dashboard_hero():
+    st.markdown(
+        """
+        <div class="warm-command-center">
+            <div>
+                <h2>Project Command Center</h2>
+                <p>Track active work, deadlines, publishing, and next actions.</p>
+            </div>
+            <div class="warm-state-list" aria-label="Key workflow states">
+                <span class="warm-state-badge is-active">Active</span>
+                <span class="warm-state-badge is-paused">Paused</span>
+                <span class="warm-state-badge is-blocked">Blocked</span>
+                <span class="warm-state-badge is-ready">Ready</span>
+                <span class="warm-state-badge is-published">Published</span>
+                <span class="warm-state-badge is-overdue">Overdue</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def section_card(title):
     card = st.container(border=True)
     card.markdown(
@@ -206,6 +320,13 @@ def section_card(title):
         unsafe_allow_html=True,
     )
     return card
+
+
+def render_empty_state(container, message):
+    container.markdown(
+        f'<div class="warm-empty-state">{escape(message)}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def style_status_badges(dataframe):
