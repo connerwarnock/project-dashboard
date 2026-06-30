@@ -18,6 +18,7 @@ from data_utils import (
     save_publishing_queue,
     save_tasks,
 )
+from sheets_utils import GoogleSheetsError
 
 
 def render_edit_projects(projects):
@@ -39,8 +40,11 @@ def render_edit_projects(projects):
     )
 
     if st.button("Save project changes", key="save_projects_button"):
-        save_projects(edited_projects)
-        st.success("Project changes saved.")
+        try:
+            save_projects(edited_projects)
+            st.success("Project changes saved.")
+        except GoogleSheetsError as error:
+            st.error(str(error))
 
 
 def render_edit_tasks(projects, tasks):
@@ -64,8 +68,11 @@ def render_edit_tasks(projects, tasks):
     )
 
     if st.button("Save task changes", key="save_tasks_button"):
-        save_tasks(edited_tasks)
-        st.success("Task changes saved.")
+        try:
+            save_tasks(edited_tasks)
+            st.success("Task changes saved.")
+        except GoogleSheetsError as error:
+            st.error(str(error))
 
 
 def render_publishing_queue(projects, publishing_queue):
@@ -100,8 +107,11 @@ def render_publishing_queue(projects, publishing_queue):
     )
 
     if st.button("Save publishing queue", key="save_publishing_queue_button"):
-        save_publishing_queue(edited_queue)
-        st.success("Publishing queue saved.")
+        try:
+            save_publishing_queue(edited_queue)
+            st.success("Publishing queue saved.")
+        except GoogleSheetsError as error:
+            st.error(str(error))
 
 
 def render_dashboard(projects, tasks, publishing_queue):

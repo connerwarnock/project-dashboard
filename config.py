@@ -1,6 +1,6 @@
-PROJECTS_CSV = "projects.csv"
-TASKS_CSV = "tasks.csv"
-PUBLISHING_QUEUE_CSV = "publishing_queue.csv"
+PROJECTS_WORKSHEET = "Projects"
+TASKS_WORKSHEET = "Tasks"
+PUBLISHING_QUEUE_WORKSHEET = "Publishing Queue"
 
 PROJECT_STATUSES = [
     "Backlog",

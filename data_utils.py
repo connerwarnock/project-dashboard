@@ -1,18 +1,23 @@
 import pandas as pd
 
-from config import PROJECTS_CSV, PUBLISHING_QUEUE_CSV, TASKS_CSV
+from config import (
+    PROJECTS_WORKSHEET,
+    PUBLISHING_QUEUE_WORKSHEET,
+    TASKS_WORKSHEET,
+)
+from sheets_utils import read_worksheet, write_worksheet
 
 
 def load_projects():
-    return pd.read_csv(PROJECTS_CSV)
+    return read_worksheet(PROJECTS_WORKSHEET)
 
 
 def load_tasks():
-    return pd.read_csv(TASKS_CSV)
+    return read_worksheet(TASKS_WORKSHEET)
 
 
 def load_publishing_queue():
-    return pd.read_csv(PUBLISHING_QUEUE_CSV)
+    return read_worksheet(PUBLISHING_QUEUE_WORKSHEET)
 
 
 def parse_date_column(dataframe, column_name):
@@ -33,14 +38,14 @@ def format_date_column(dataframe, column_name):
 
 def save_projects(projects):
     projects_to_save = format_date_column(projects, "Last Updated")
-    projects_to_save.to_csv(PROJECTS_CSV, index=False)
+    write_worksheet(PROJECTS_WORKSHEET, projects_to_save)
 
 
 def save_tasks(tasks):
     tasks_to_save = format_date_column(tasks, "Due Date")
-    tasks_to_save.to_csv(TASKS_CSV, index=False)
+    write_worksheet(TASKS_WORKSHEET, tasks_to_save)
 
 
 def save_publishing_queue(publishing_queue):
     queue_to_save = format_date_column(publishing_queue, "Publish Date")
-    queue_to_save.to_csv(PUBLISHING_QUEUE_CSV, index=False)
+    write_worksheet(PUBLISHING_QUEUE_WORKSHEET, queue_to_save)

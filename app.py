@@ -7,6 +7,7 @@ from dashboard_views import (
     render_publishing_queue,
 )
 from data_utils import load_projects, load_publishing_queue, load_tasks
+from sheets_utils import GoogleSheetsError
 
 
 st.set_page_config(page_title="Project Dashboard", page_icon=":bar_chart:", layout="wide")
@@ -14,9 +15,13 @@ st.set_page_config(page_title="Project Dashboard", page_icon=":bar_chart:", layo
 st.title("Project Dashboard")
 st.caption("A simple command center for tracking projects, tasks, and publishing ideas.")
 
-projects = load_projects()
-tasks = load_tasks()
-publishing_queue = load_publishing_queue()
+try:
+    projects = load_projects()
+    tasks = load_tasks()
+    publishing_queue = load_publishing_queue()
+except GoogleSheetsError as error:
+    st.error(str(error))
+    st.stop()
 
 tab1, tab2, tab3, tab4 = st.tabs(
     ["Edit Projects", "Edit Tasks", "Publishing Queue", "View Dashboard"]
