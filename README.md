@@ -2,6 +2,9 @@
 
 A personal Streamlit dashboard for tracking projects, tasks, publishing outputs, next actions, deadlines, and stale projects.
 
+The visual system and Warm Future color palette are documented in
+[`DESIGN.md`](DESIGN.md).
+
 Live data is stored in these Google Sheets worksheets:
 
 - `Projects`

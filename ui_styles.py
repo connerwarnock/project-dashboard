@@ -3,6 +3,28 @@ from html import escape
 import streamlit as st
 
 
+STATUS_BADGE_STYLES = {
+    "Active": ("#E6F8F6", "#63D5D0"),
+    "Doing": ("#FBE8ED", "#E56B8A"),
+    "In Progress": ("#FBE8ED", "#E56B8A"),
+    "Ready": ("#E5F7EE", "#8ADDBA"),
+    "Ready to Publish": ("#E5F7EE", "#8ADDBA"),
+    "Done": ("#E5F7EE", "#8ADDBA"),
+    "Published": ("#E5F7EE", "#8ADDBA"),
+    "Shipped": ("#E5F7EE", "#8ADDBA"),
+    "Drafting": ("#EEEAFB", "#B8A7E8"),
+    "Needs Review": ("#EEEAFB", "#B8A7E8"),
+    "Needs Visual": ("#EEEAFB", "#B8A7E8"),
+    "Paused": ("#F3EFEC", "#D8CCC3"),
+    "Backlog": ("#F3EFEC", "#D8CCC3"),
+    "Archived": ("#F3EFEC", "#D8CCC3"),
+    "Blocked": ("#FCEAE8", "#F2A6A0"),
+    "Overdue": ("#FCEAE8", "#F2A6A0"),
+    "Reference": ("#FFF6D8", "#F7D97A"),
+}
+DEFAULT_STATUS_BADGE_STYLE = ("#F3EFEC", "#D8CCC3")
+
+
 def apply_warm_future_theme():
     st.markdown(
         """
@@ -12,11 +34,16 @@ def apply_warm_future_theme():
         :root {
             --warm-background: #FFF9F4;
             --warm-surface: #FFFCF9;
-            --warm-text: #343130;
+            --warm-text: #2F2A28;
             --warm-muted: #6F6865;
             --warm-border: #EADBD4;
             --warm-pink: #E56B8A;
             --warm-turquoise: #63D5D0;
+            --warm-yellow: #F7D97A;
+            --warm-mint: #8ADDBA;
+            --warm-lavender: #B8A7E8;
+            --warm-gray: #D8CCC3;
+            --warm-coral: #F2A6A0;
         }
 
         .stApp {
@@ -114,8 +141,8 @@ def apply_warm_future_theme():
         .warm-state-badge {
             padding: 0.24rem 0.55rem;
             color: var(--warm-text);
-            background-color: #F5ECE7;
-            border: 1px solid var(--warm-border);
+            background-color: #F3EFEC;
+            border: 1px solid var(--warm-gray);
             border-radius: 999px;
             font-size: 0.75rem;
             font-weight: 600;
@@ -123,21 +150,26 @@ def apply_warm_future_theme():
             white-space: nowrap;
         }
 
-        .warm-state-badge.is-active,
+        .warm-state-badge.is-active {
+            background-color: #E6F8F6;
+            border-color: var(--warm-turquoise);
+        }
+
         .warm-state-badge.is-ready,
         .warm-state-badge.is-published {
-            background-color: #DDF7F5;
-            border-color: #B7E9E5;
+            background-color: #E5F7EE;
+            border-color: var(--warm-mint);
         }
 
         .warm-state-badge.is-paused {
-            background-color: #F5ECE7;
+            background-color: #F3EFEC;
+            border-color: var(--warm-gray);
         }
 
         .warm-state-badge.is-blocked,
         .warm-state-badge.is-overdue {
-            background-color: #FBE6EC;
-            border-color: #F3C4D1;
+            background-color: #FCEAE8;
+            border-color: var(--warm-coral);
         }
 
         [data-testid="stMetric"] {
@@ -333,28 +365,16 @@ def style_status_badges(dataframe):
     if "Status" not in dataframe.columns:
         return dataframe
 
-    positive_statuses = {
-        "Active",
-        "Doing",
-        "Done",
-        "Published",
-        "Ready",
-        "Ready to Publish",
-        "Shipped",
-    }
-    attention_statuses = {"Blocked", "Needs Review", "Needs Visual", "Paused"}
-
     def status_style(value):
-        if value in positive_statuses:
-            background = "#DDF7F5"
-        elif value in attention_statuses:
-            background = "#FBE6EC"
-        else:
-            background = "#F5ECE7"
+        background, border = STATUS_BADGE_STYLES.get(
+            value,
+            DEFAULT_STATUS_BADGE_STYLE,
+        )
 
         return (
             f"background-color: {background}; "
-            "color: #343130; "
+            f"border: 1px solid {border}; "
+            "color: #2F2A28; "
             "font-weight: 600; "
             "text-align: center; "
             "border-radius: 6px;"
