@@ -28,7 +28,7 @@ from ui_styles import (
 
 
 def render_edit_projects(projects):
-    st.subheader("Edit Projects")
+    st.subheader("✏️ Edit Projects")
 
     projects_for_edit = parse_date_column(projects, "Last Updated")
 
@@ -54,7 +54,7 @@ def render_edit_projects(projects):
 
 
 def render_edit_tasks(projects, tasks):
-    st.subheader("Edit Tasks")
+    st.subheader("✅ Edit Tasks")
 
     project_options = get_project_options(projects)
     tasks_for_edit = parse_date_column(tasks, "Due Date")
@@ -82,7 +82,7 @@ def render_edit_tasks(projects, tasks):
 
 
 def render_publishing_queue(projects, publishing_queue):
-    st.subheader("Publishing Queue")
+    st.subheader("📝 Publishing Queue")
 
     project_options = get_project_options(projects)
     queue_for_edit = parse_date_column(publishing_queue, "Publish Date")
@@ -172,7 +172,7 @@ def render_metrics(active_count, open_tasks, overdue_tasks):
 
 
 def render_publishing_summary(publishing_queue):
-    card = section_card("Publishing Queue Summary")
+    card = section_card("Publishing Queue Summary", "📝")
     card.caption("A quick pulse on what is moving toward publication.")
 
     unpublished = publishing_queue[
@@ -188,7 +188,7 @@ def render_publishing_summary(publishing_queue):
 
 
 def render_projects_overview(projects):
-    card = section_card("Projects Overview")
+    card = section_card("Projects Overview", "📁")
     card.caption("All current projects at a glance.")
 
     projects_overview = projects[projects["Status"] != "Archived"].copy()
@@ -202,7 +202,7 @@ def render_projects_overview(projects):
 
 
 def render_stale_projects(projects, today):
-    card = section_card("Stale Projects")
+    card = section_card("Stale Projects", "🕒")
     card.caption("Active work not updated in the last 14 days.")
 
     projects_with_dates = projects.copy()
@@ -227,7 +227,7 @@ def render_stale_projects(projects, today):
 
 
 def render_next_actions(open_tasks):
-    card = section_card("Next Actions")
+    card = section_card("Next Actions", "📌")
     card.caption("High- and medium-priority work that needs attention.")
 
     next_actions = open_tasks[
@@ -254,7 +254,7 @@ def render_next_actions(open_tasks):
 
 
 def render_deadlines(overdue_tasks, upcoming_tasks):
-    overdue_card = section_card("Overdue Tasks")
+    overdue_card = section_card("Overdue Tasks", "🚨")
     overdue_card.caption("Open tasks that have passed their due date.")
     render_dashboard_table(
         overdue_card,
@@ -262,7 +262,7 @@ def render_deadlines(overdue_tasks, upcoming_tasks):
         "No overdue tasks. Nice.",
     )
 
-    upcoming_card = section_card("Upcoming Deadlines")
+    upcoming_card = section_card("Upcoming Deadlines", "⏰")
     upcoming_card.caption("Open tasks with due dates ahead.")
     render_dashboard_table(
         upcoming_card,
@@ -272,7 +272,7 @@ def render_deadlines(overdue_tasks, upcoming_tasks):
 
 
 def render_project_detail(projects, tasks, project_options):
-    card = section_card("Project Detail")
+    card = section_card("Project Detail", "🧭")
     card.caption("Inspect the current focus and task list for one project.")
 
     selected_project_detail = card.selectbox(

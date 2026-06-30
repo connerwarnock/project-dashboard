@@ -46,3 +46,10 @@ sections, storage connection, and workflow. Section markers may use the broader
 palette, but navigation remains informational until dedicated page navigation
 is introduced. Sidebar metadata uses the same warm surfaces, soft borders, and
 restrained 8px corner radius as the main dashboard.
+
+## Iconography
+
+Use small emoji icons to improve scanning in section headers, tabs, and compact
+sidebar labels. Icons should support a clear label rather than replace it. Keep
+them out of dense tables and repeated controls, and use the platform emoji font
+stack so Inter remains the primary interface typeface.

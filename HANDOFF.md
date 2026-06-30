@@ -122,12 +122,12 @@ full design notes.
 - Publishing summary.
 - Project Detail.
 - Warm Future styling.
+- Lightweight icons in tabs, section headers, and the sidebar.
 - Sidebar with app metadata and workflow.
 - Google Sheets persistence.
 
 ## 11. Good Future Improvements
 
-- Add icons to section headers.
 - Add a weekly pulse strip.
 - Add an Ideas Backlog.
 - Add an Assets tracker.

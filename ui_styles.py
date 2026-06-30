@@ -123,6 +123,11 @@ def apply_warm_future_theme():
             line-height: 1.3;
         }
 
+        .warm-emoji-icon {
+            font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+            font-weight: 400;
+        }
+
         .warm-command-center p {
             margin: 0;
             color: var(--warm-muted);
@@ -235,6 +240,9 @@ def apply_warm_future_theme():
         }
 
         .warm-future-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             margin: 0.1rem 0 0.9rem;
             padding-left: 0.65rem;
             color: var(--warm-text);
@@ -242,6 +250,13 @@ def apply_warm_future_theme():
             font-size: 1.2rem;
             font-weight: 600;
             line-height: 1.35;
+        }
+
+        .warm-future-section-icon {
+            width: 1.35rem;
+            flex: 0 0 1.35rem;
+            font-size: 1rem;
+            text-align: center;
         }
 
         [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] {
@@ -346,28 +361,37 @@ def apply_warm_future_theme():
             font-weight: 500;
         }
 
-        .warm-sidebar-dot {
-            width: 8px;
-            height: 8px;
-            flex: 0 0 8px;
-            background-color: var(--warm-gray);
-            border-radius: 50%;
+        .warm-sidebar-nav-icon {
+            display: inline-grid;
+            width: 1.65rem;
+            height: 1.65rem;
+            flex: 0 0 1.65rem;
+            place-items: center;
+            border-radius: 6px;
+            font-size: 0.88rem;
         }
 
-        .warm-sidebar-dot.is-projects {
-            background-color: var(--warm-pink);
+        .warm-sidebar-nav-icon.is-projects {
+            background-color: #FBE8ED;
         }
 
-        .warm-sidebar-dot.is-tasks {
-            background-color: var(--warm-turquoise);
+        .warm-sidebar-nav-icon.is-tasks {
+            background-color: #E6F8F6;
         }
 
-        .warm-sidebar-dot.is-publishing {
-            background-color: var(--warm-lavender);
+        .warm-sidebar-nav-icon.is-publishing {
+            background-color: #EEEAFB;
         }
 
-        .warm-sidebar-dot.is-dashboard {
-            background-color: var(--warm-yellow);
+        .warm-sidebar-nav-icon.is-dashboard {
+            background-color: #FFF6D8;
+        }
+
+        .warm-sidebar-meta-icon {
+            display: inline-block;
+            width: 1.15rem;
+            margin-right: 0.25rem;
+            text-align: center;
         }
 
         .warm-sidebar-meta,
@@ -483,26 +507,28 @@ def render_sidebar():
         <p class="warm-sidebar-label">MAIN SECTIONS</p>
         <div class="warm-sidebar-nav" aria-label="Main sections">
             <div class="warm-sidebar-nav-item">
-                <span class="warm-sidebar-dot is-projects"></span>Projects
+                <span class="warm-sidebar-nav-icon warm-emoji-icon is-projects">📁</span>Projects
             </div>
             <div class="warm-sidebar-nav-item">
-                <span class="warm-sidebar-dot is-tasks"></span>Tasks
+                <span class="warm-sidebar-nav-icon warm-emoji-icon is-tasks">✅</span>Tasks
             </div>
             <div class="warm-sidebar-nav-item">
-                <span class="warm-sidebar-dot is-publishing"></span>Publishing Queue
+                <span class="warm-sidebar-nav-icon warm-emoji-icon is-publishing">📰</span>Publishing Queue
             </div>
             <div class="warm-sidebar-nav-item">
-                <span class="warm-sidebar-dot is-dashboard"></span>Dashboard
+                <span class="warm-sidebar-nav-icon warm-emoji-icon is-dashboard">📊</span>Dashboard
             </div>
         </div>
 
         <p class="warm-sidebar-label">APP STATUS</p>
         <div class="warm-sidebar-meta">
             <div class="warm-sidebar-meta-row">
-                <span>Data source</span><strong>Google Sheets</strong>
+                <span><span class="warm-sidebar-meta-icon warm-emoji-icon">🗂️</span>Data source</span>
+                <strong>Google Sheets</strong>
             </div>
             <div class="warm-sidebar-meta-row">
-                <span>Storage</span><span class="warm-sidebar-connected">Connected</span>
+                <span><span class="warm-sidebar-meta-icon warm-emoji-icon">🔗</span>Storage</span>
+                <span class="warm-sidebar-connected">Connected</span>
             </div>
         </div>
 
@@ -520,7 +546,7 @@ def render_dashboard_hero():
         """
         <div class="warm-command-center">
             <div>
-                <h2>Project Command Center</h2>
+                <h2><span class="warm-emoji-icon">📊</span> Project Command Center</h2>
                 <p>Track active work, deadlines, publishing, and next actions.</p>
             </div>
             <div class="warm-state-list" aria-label="Key workflow states">
@@ -537,10 +563,18 @@ def render_dashboard_hero():
     )
 
 
-def section_card(title):
+def section_card(title, icon=None):
     card = st.container(border=True)
+    icon_markup = ""
+    if icon:
+        icon_markup = (
+            '<span class="warm-future-section-icon warm-emoji-icon">'
+            f"{escape(icon)}</span>"
+        )
+
     card.markdown(
-        f'<div class="warm-future-section-header">{escape(title)}</div>',
+        '<div class="warm-future-section-header">'
+        f"{icon_markup}<span>{escape(title)}</span></div>",
         unsafe_allow_html=True,
     )
     return card

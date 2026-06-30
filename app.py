@@ -35,7 +35,7 @@ except GoogleSheetsError as error:
 render_sidebar()
 
 tab1, tab2, tab3, tab4 = st.tabs(
-    ["Edit Projects", "Edit Tasks", "Publishing Queue", "View Dashboard"]
+    ["✏️ Edit Projects", "✅ Edit Tasks", "📰 Publishing Queue", "📊 View Dashboard"]
 )
 
 with tab1:
