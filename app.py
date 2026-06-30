@@ -8,11 +8,14 @@ from dashboard_views import (
 )
 from data_utils import load_projects, load_publishing_queue, load_tasks
 from sheets_utils import GoogleSheetsError
+from ui_styles import apply_warm_future_theme
 
 
 st.set_page_config(page_title="Project Dashboard", page_icon=":bar_chart:", layout="wide")
+apply_warm_future_theme()
 
 st.title("Project Dashboard")
+st.markdown('<div class="warm-future-title-rule"></div>', unsafe_allow_html=True)
 st.caption("A simple command center for tracking projects, tasks, and publishing ideas.")
 
 try:
