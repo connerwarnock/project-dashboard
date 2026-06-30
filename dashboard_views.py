@@ -19,6 +19,7 @@ from data_utils import (
     save_tasks,
 )
 from sheets_utils import GoogleSheetsError
+from ui_styles import section_card
 
 
 def render_edit_projects(projects):
@@ -153,7 +154,7 @@ def render_metrics(active_count, open_tasks, overdue_tasks):
 
 
 def render_publishing_summary(publishing_queue):
-    st.subheader("Publishing Queue Summary")
+    card = section_card("Publishing Queue Summary")
 
     unpublished = publishing_queue[
         ~publishing_queue["Status"].isin(["Published", "Archived"])
@@ -161,19 +162,19 @@ def render_publishing_summary(publishing_queue):
     ready = publishing_queue[publishing_queue["Status"] == "Ready"]
     published = publishing_queue[publishing_queue["Status"] == "Published"]
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = card.columns(3)
     col1.metric("Unpublished Outputs", len(unpublished))
     col2.metric("Ready to Publish", len(ready))
     col3.metric("Published Outputs", len(published))
 
 
 def render_projects_overview(projects):
-    st.subheader("Projects Overview")
+    card = section_card("Projects Overview")
 
     projects_overview = projects[projects["Status"] != "Archived"].copy()
     projects_overview = format_date_column(projects_overview, "Last Updated")
 
-    st.dataframe(
+    card.dataframe(
         projects_overview[PROJECT_OVERVIEW_COLUMNS],
         use_container_width=True,
         hide_index=True,
@@ -181,7 +182,7 @@ def render_projects_overview(projects):
 
 
 def render_stale_projects(projects, today):
-    st.subheader("Stale Projects")
+    card = section_card("Stale Projects")
 
     projects_with_dates = projects.copy()
     projects_with_dates["Last Updated Parsed"] = pd.to_datetime(
@@ -197,7 +198,7 @@ def render_stale_projects(projects, today):
         & (projects_with_dates["Last Updated Parsed"] < stale_cutoff)
     ]
 
-    st.dataframe(
+    card.dataframe(
         stale_projects.drop(columns=["Last Updated Parsed"], errors="ignore"),
         use_container_width=True,
         hide_index=True,
@@ -205,7 +206,7 @@ def render_stale_projects(projects, today):
 
 
 def render_next_actions(open_tasks):
-    st.subheader("Next Actions")
+    card = section_card("Next Actions")
 
     next_actions = open_tasks[
         open_tasks["Status"].isin(["Not Started", "Doing", "Blocked"])
@@ -223,19 +224,19 @@ def render_next_actions(open_tasks):
         na_position="last",
     ).drop(columns=["Priority Rank", "Status Rank", "Due Date Parsed"])
 
-    st.dataframe(next_actions, use_container_width=True, hide_index=True)
+    card.dataframe(next_actions, use_container_width=True, hide_index=True)
 
 
 def render_deadlines(overdue_tasks, upcoming_tasks):
-    st.subheader("Overdue Tasks")
-    st.dataframe(
+    overdue_card = section_card("Overdue Tasks")
+    overdue_card.dataframe(
         overdue_tasks.drop(columns=["Due Date Parsed"]),
         use_container_width=True,
         hide_index=True,
     )
 
-    st.subheader("Upcoming Deadlines")
-    st.dataframe(
+    upcoming_card = section_card("Upcoming Deadlines")
+    upcoming_card.dataframe(
         upcoming_tasks.drop(columns=["Due Date Parsed"]),
         use_container_width=True,
         hide_index=True,
@@ -243,9 +244,9 @@ def render_deadlines(overdue_tasks, upcoming_tasks):
 
 
 def render_project_detail(projects, tasks, project_options):
-    st.subheader("Project Detail")
+    card = section_card("Project Detail")
 
-    selected_project_detail = st.selectbox(
+    selected_project_detail = card.selectbox(
         "Choose a project to inspect",
         project_options,
         key="project_detail_select",
@@ -257,16 +258,16 @@ def render_project_detail(projects, tasks, project_options):
     if not project_row.empty:
         project_info = project_row.iloc[0]
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3 = card.columns(3)
         col1.metric("Status", project_info["Status"])
         col2.metric("Priority", project_info["Priority"])
         col3.metric("Stage", project_info["Stage"])
 
-        st.write("**Next Action:**", project_info["Next Action"])
-        st.write("**Last Updated:**", project_info.get("Last Updated", ""))
+        card.write(f"**Next Action:** {project_info['Next Action']}")
+        card.write(f"**Last Updated:** {project_info.get('Last Updated', '')}")
 
-        st.write("**Project Tasks**")
-        st.dataframe(
+        card.write("**Project Tasks**")
+        card.dataframe(
             project_tasks.drop(columns=["Due Date Parsed"], errors="ignore"),
             use_container_width=True,
             hide_index=True,

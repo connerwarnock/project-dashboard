@@ -90,6 +90,34 @@ def apply_warm_future_theme():
             box-shadow: 0 3px 12px rgba(71, 56, 50, 0.04);
         }
 
+        [data-testid="stVerticalBlockBorderWrapper"] {
+            padding: 1rem;
+            background-color: var(--warm-surface);
+            border-color: var(--warm-border) !important;
+            border-radius: 8px;
+            box-shadow: 0 3px 14px rgba(71, 56, 50, 0.045);
+        }
+
+        .warm-future-section-header {
+            margin: 0.1rem 0 0.9rem;
+            padding-left: 0.65rem;
+            color: var(--warm-text);
+            border-left: 4px solid var(--warm-turquoise);
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMetric"] {
+            min-height: 96px;
+            padding: 0.65rem 0.8rem;
+            background-color: transparent;
+            border: 0;
+            border-left: 3px solid var(--warm-pink);
+            border-radius: 0;
+            box-shadow: none;
+        }
+
         .stButton > button {
             color: var(--warm-text);
             background-color: var(--warm-surface);
@@ -110,3 +138,12 @@ def apply_warm_future_theme():
         """,
         unsafe_allow_html=True,
     )
+
+
+def section_card(title):
+    card = st.container(border=True)
+    card.markdown(
+        f'<div class="warm-future-section-header">{title}</div>',
+        unsafe_allow_html=True,
+    )
+    return card
