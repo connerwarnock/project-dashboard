@@ -19,7 +19,7 @@ from data_utils import (
     save_tasks,
 )
 from sheets_utils import GoogleSheetsError
-from ui_styles import section_card
+from ui_styles import section_card, style_status_badges
 
 
 def render_edit_projects(projects):
@@ -175,7 +175,7 @@ def render_projects_overview(projects):
     projects_overview = format_date_column(projects_overview, "Last Updated")
 
     card.dataframe(
-        projects_overview[PROJECT_OVERVIEW_COLUMNS],
+        style_status_badges(projects_overview[PROJECT_OVERVIEW_COLUMNS]),
         use_container_width=True,
         hide_index=True,
     )
@@ -199,7 +199,9 @@ def render_stale_projects(projects, today):
     ]
 
     card.dataframe(
-        stale_projects.drop(columns=["Last Updated Parsed"], errors="ignore"),
+        style_status_badges(
+            stale_projects.drop(columns=["Last Updated Parsed"], errors="ignore")
+        ),
         use_container_width=True,
         hide_index=True,
     )
@@ -224,20 +226,24 @@ def render_next_actions(open_tasks):
         na_position="last",
     ).drop(columns=["Priority Rank", "Status Rank", "Due Date Parsed"])
 
-    card.dataframe(next_actions, use_container_width=True, hide_index=True)
+    card.dataframe(
+        style_status_badges(next_actions),
+        use_container_width=True,
+        hide_index=True,
+    )
 
 
 def render_deadlines(overdue_tasks, upcoming_tasks):
     overdue_card = section_card("Overdue Tasks")
     overdue_card.dataframe(
-        overdue_tasks.drop(columns=["Due Date Parsed"]),
+        style_status_badges(overdue_tasks.drop(columns=["Due Date Parsed"])),
         use_container_width=True,
         hide_index=True,
     )
 
     upcoming_card = section_card("Upcoming Deadlines")
     upcoming_card.dataframe(
-        upcoming_tasks.drop(columns=["Due Date Parsed"]),
+        style_status_badges(upcoming_tasks.drop(columns=["Due Date Parsed"])),
         use_container_width=True,
         hide_index=True,
     )
@@ -268,7 +274,9 @@ def render_project_detail(projects, tasks, project_options):
 
         card.write("**Project Tasks**")
         card.dataframe(
-            project_tasks.drop(columns=["Due Date Parsed"], errors="ignore"),
+            style_status_badges(
+                project_tasks.drop(columns=["Due Date Parsed"], errors="ignore")
+            ),
             use_container_width=True,
             hide_index=True,
         )
