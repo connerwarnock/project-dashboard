@@ -8,10 +8,15 @@ from dashboard_views import (
 )
 from data_utils import load_projects, load_publishing_queue, load_tasks
 from sheets_utils import GoogleSheetsError
-from ui_styles import apply_warm_future_theme, render_app_header
+from ui_styles import apply_warm_future_theme, render_app_header, render_sidebar
 
 
-st.set_page_config(page_title="Project Dashboard", page_icon=":bar_chart:", layout="wide")
+st.set_page_config(
+    page_title="Project Dashboard",
+    page_icon=":bar_chart:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 apply_warm_future_theme()
 
 render_app_header(
@@ -26,6 +31,8 @@ try:
 except GoogleSheetsError as error:
     st.error(str(error))
     st.stop()
+
+render_sidebar()
 
 tab1, tab2, tab3, tab4 = st.tabs(
     ["Edit Projects", "Edit Tasks", "Publishing Queue", "View Dashboard"]

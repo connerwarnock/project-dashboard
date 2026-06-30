@@ -38,3 +38,11 @@ their borders. This keeps status labels distinct without making tables noisy.
 Inter is preferred, with system sans-serif fonts as fallbacks. Cards use warm
 off-white surfaces, subtle borders, restrained shadows, and a maximum corner
 radius of 8px. Color should clarify state and hierarchy rather than decorate.
+
+## Sidebar
+
+The sidebar supplements the primary tabs with a compact overview of the app's
+sections, storage connection, and workflow. Section markers may use the broader
+palette, but navigation remains informational until dedicated page navigation
+is introduced. Sidebar metadata uses the same warm surfaces, soft borders, and
+restrained 8px corner radius as the main dashboard.

@@ -285,6 +285,154 @@ def apply_warm_future_theme():
             display: none;
         }
 
+        [data-testid="stSidebar"] {
+            background-color: var(--warm-surface);
+            border-right: 1px solid var(--warm-border);
+        }
+
+        [data-testid="stSidebarContent"] {
+            padding-top: 1.4rem;
+        }
+
+        .warm-sidebar-brand {
+            margin-bottom: 1rem;
+            padding: 0.2rem 0.15rem 1rem;
+            border-bottom: 1px solid var(--warm-border);
+        }
+
+        .warm-sidebar-brand h2 {
+            margin: 0;
+            color: var(--warm-text);
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .warm-sidebar-brand-rule {
+            width: 36px;
+            height: 3px;
+            margin: 0.55rem 0 0.6rem;
+            background-color: var(--warm-turquoise);
+            border-radius: 2px;
+        }
+
+        .warm-sidebar-brand p {
+            margin: 0;
+            color: var(--warm-muted);
+            font-size: 0.84rem;
+        }
+
+        .warm-sidebar-label {
+            margin: 0 0 0.55rem;
+            color: var(--warm-muted);
+            font-size: 0.73rem;
+            font-weight: 700;
+        }
+
+        .warm-sidebar-nav {
+            display: grid;
+            gap: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .warm-sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.4rem 0.45rem;
+            color: var(--warm-text);
+            border-radius: 6px;
+            font-size: 0.86rem;
+            font-weight: 500;
+        }
+
+        .warm-sidebar-dot {
+            width: 8px;
+            height: 8px;
+            flex: 0 0 8px;
+            background-color: var(--warm-gray);
+            border-radius: 50%;
+        }
+
+        .warm-sidebar-dot.is-projects {
+            background-color: var(--warm-pink);
+        }
+
+        .warm-sidebar-dot.is-tasks {
+            background-color: var(--warm-turquoise);
+        }
+
+        .warm-sidebar-dot.is-publishing {
+            background-color: var(--warm-lavender);
+        }
+
+        .warm-sidebar-dot.is-dashboard {
+            background-color: var(--warm-yellow);
+        }
+
+        .warm-sidebar-meta,
+        .warm-sidebar-workflow {
+            margin-bottom: 0.8rem;
+            padding: 0.8rem;
+            background-color: var(--warm-background);
+            border: 1px solid var(--warm-border);
+            border-radius: 8px;
+        }
+
+        .warm-sidebar-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            color: var(--warm-muted);
+            font-size: 0.78rem;
+        }
+
+        .warm-sidebar-meta-row + .warm-sidebar-meta-row {
+            margin-top: 0.55rem;
+            padding-top: 0.55rem;
+            border-top: 1px solid var(--warm-border);
+        }
+
+        .warm-sidebar-meta-row strong {
+            color: var(--warm-text);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .warm-sidebar-connected {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.18rem 0.42rem;
+            color: var(--warm-text);
+            background-color: #E5F7EE;
+            border: 1px solid var(--warm-mint);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .warm-sidebar-connected::before {
+            width: 6px;
+            height: 6px;
+            background-color: var(--warm-mint);
+            border-radius: 50%;
+            content: "";
+        }
+
+        .warm-sidebar-workflow p {
+            margin: 0;
+            color: var(--warm-text);
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.55;
+        }
+
+        .warm-sidebar-workflow span {
+            color: var(--warm-pink);
+        }
+
         .stButton > button {
             color: var(--warm-text);
             background-color: var(--warm-surface);
@@ -317,6 +465,50 @@ def render_app_header(title, subtitle):
             <h1 class="warm-future-title">{safe_title}</h1>
             <div class="warm-future-title-rule"></div>
             <p class="warm-future-subtitle">{safe_subtitle}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_sidebar():
+    st.sidebar.markdown(
+        """
+        <div class="warm-sidebar-brand">
+            <h2>Project Dashboard</h2>
+            <div class="warm-sidebar-brand-rule"></div>
+            <p>Personal command center</p>
+        </div>
+
+        <p class="warm-sidebar-label">MAIN SECTIONS</p>
+        <div class="warm-sidebar-nav" aria-label="Main sections">
+            <div class="warm-sidebar-nav-item">
+                <span class="warm-sidebar-dot is-projects"></span>Projects
+            </div>
+            <div class="warm-sidebar-nav-item">
+                <span class="warm-sidebar-dot is-tasks"></span>Tasks
+            </div>
+            <div class="warm-sidebar-nav-item">
+                <span class="warm-sidebar-dot is-publishing"></span>Publishing Queue
+            </div>
+            <div class="warm-sidebar-nav-item">
+                <span class="warm-sidebar-dot is-dashboard"></span>Dashboard
+            </div>
+        </div>
+
+        <p class="warm-sidebar-label">APP STATUS</p>
+        <div class="warm-sidebar-meta">
+            <div class="warm-sidebar-meta-row">
+                <span>Data source</span><strong>Google Sheets</strong>
+            </div>
+            <div class="warm-sidebar-meta-row">
+                <span>Storage</span><span class="warm-sidebar-connected">Connected</span>
+            </div>
+        </div>
+
+        <p class="warm-sidebar-label">WORKFLOW</p>
+        <div class="warm-sidebar-workflow">
+            <p>Plan <span>&rarr;</span> Build <span>&rarr;</span> Publish <span>&rarr;</span> Review</p>
         </div>
         """,
         unsafe_allow_html=True,
