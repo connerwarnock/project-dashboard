@@ -20,11 +20,13 @@ from data_utils import (
 )
 from sheets_utils import GoogleSheetsError
 from ui_styles import (
+    render_active_project_cards,
     render_about_dashboard,
     render_dashboard_hero,
     render_empty_state,
     render_mini_stats,
     render_project_progress,
+    render_publishing_pipeline,
     render_weekly_pulse,
     section_card,
     style_table_indicators,
@@ -159,6 +161,8 @@ def render_dashboard(projects, tasks, publishing_queue):
         ready_outputs=ready_output_count,
         stale_projects=len(stale_projects),
     )
+    render_active_projects(projects)
+    render_recently_updated(projects)
     render_publishing_summary(publishing_queue, ready_output_count)
     render_projects_overview(projects, active_count, paused_count, shipped_count)
     render_stale_projects(stale_projects)
@@ -205,6 +209,35 @@ def render_dashboard_table(card, dataframe, empty_message):
     )
 
 
+def render_active_projects(projects):
+    active_projects = projects[projects["Status"] == "Active"].copy()
+    active_projects = format_date_column(active_projects, "Last Updated")
+    active_records = active_projects.fillna("").to_dict("records")
+    render_active_project_cards(active_records)
+
+
+def render_recently_updated(projects):
+    card = section_card("Recently Updated", "🕘", "lavender")
+    card.caption("The five projects with the most recent recorded updates.")
+
+    recent_projects = projects.copy()
+    recent_projects["Last Updated Parsed"] = pd.to_datetime(
+        recent_projects["Last Updated"],
+        errors="coerce",
+    )
+    recent_projects = recent_projects[
+        recent_projects["Last Updated Parsed"].notna()
+    ].sort_values("Last Updated Parsed", ascending=False).head(5)
+    recent_projects = recent_projects.drop(columns=["Last Updated Parsed"])
+    recent_projects = format_date_column(recent_projects, "Last Updated")
+
+    render_dashboard_table(
+        card,
+        recent_projects[["Project", "Category", "Status", "Stage", "Last Updated"]],
+        "No project updates have been dated yet.",
+    )
+
+
 def render_publishing_summary(publishing_queue, ready_output_count):
     card = section_card("Publishing Queue Summary", "📝", "lavender")
     card.caption("A quick pulse on what is moving toward publication.")
@@ -222,6 +255,10 @@ def render_publishing_summary(publishing_queue, ready_output_count):
             (ready_output_count, count_label(ready_output_count, "ready", "ready")),
             (len(published), count_label(len(published), "published", "published")),
         ],
+    )
+    render_publishing_pipeline(
+        card,
+        publishing_queue["Status"].value_counts().to_dict(),
     )
 
     col1, col2, col3 = card.columns(3)

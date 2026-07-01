@@ -118,11 +118,13 @@ full design notes.
 - Overview is the first and default landing tab, followed by Projects, Tasks,
   and Publish.
 - Projects Overview.
+- Active Project cards and Recently Updated appear near the top of Overview.
 - Stale Projects.
 - Next Actions.
 - Overdue Tasks.
 - Upcoming Deadlines.
 - Publishing summary.
+- Publishing pipeline for Idea, Drafting, Needs Visual, Ready, and Published.
 - Weekly Pulse overview strip.
 - Project Detail.
 - Lost Nomad branding in the main header, dashboard hero, and sidebar.
@@ -130,6 +132,7 @@ full design notes.
 - Lightweight icons in tabs, section headers, and the sidebar.
 - Sidebar with app metadata and workflow.
 - Sidebar status legend, section mini stats, and About dashboard card.
+- Sidebar North Star tagline: "Build the future, track the work."
 - Google Sheets persistence.
 
 ## 11. Good Future Improvements

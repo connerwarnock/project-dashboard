@@ -650,6 +650,175 @@ def apply_warm_future_theme():
             line-height: 1.45;
         }
 
+        .warm-active-projects-section {
+            margin: 0.45rem 0 1.1rem;
+        }
+
+        .warm-active-projects-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+            padding-left: 0.65rem;
+            color: var(--warm-text);
+            border-left: 4px solid var(--warm-turquoise);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .warm-active-projects-caption {
+            margin: 0 0 0.7rem;
+            color: var(--warm-muted);
+            font-size: 0.8rem;
+        }
+
+        .warm-active-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 0.7rem;
+        }
+
+        .warm-active-project-card {
+            min-width: 0;
+            padding: 0.8rem;
+            background-color: #FFFCF9;
+            border: 1px solid var(--warm-border);
+            border-top: 3px solid var(--warm-turquoise);
+            border-radius: 8px;
+            box-shadow: 0 3px 12px rgba(71, 56, 50, 0.04);
+        }
+
+        .warm-active-project-card h3 {
+            margin: 0 0 0.22rem;
+            color: var(--warm-text);
+            font-size: 0.92rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .warm-active-project-category {
+            margin-bottom: 0.55rem;
+            color: var(--warm-muted);
+            font-size: 0.72rem;
+        }
+
+        .warm-active-project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .warm-active-project-chip {
+            padding: 0.2rem 0.42rem;
+            color: var(--warm-text);
+            background-color: #E6F8F6;
+            border: 1px solid #BFEAE7;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .warm-active-project-chip.is-high {
+            background-color: #FBE8ED;
+            border-color: #F2CDD6;
+        }
+
+        .warm-active-project-chip.is-medium {
+            background-color: #FFF6D8;
+            border-color: #F3E2A9;
+        }
+
+        .warm-active-project-chip.is-low {
+            background-color: #F3EFEC;
+            border-color: var(--warm-gray);
+        }
+
+        .warm-active-project-action {
+            margin: 0;
+            padding: 0.55rem 0.6rem;
+            color: var(--warm-text);
+            background-color: rgba(255, 249, 244, 0.72);
+            border-left: 2px solid var(--warm-pink);
+            border-radius: 4px;
+            font-size: 0.74rem;
+            line-height: 1.4;
+        }
+
+        .warm-active-project-action span,
+        .warm-active-project-updated span {
+            color: var(--warm-muted);
+            font-weight: 600;
+        }
+
+        .warm-active-project-updated {
+            margin-top: 0.5rem;
+            color: var(--warm-muted);
+            font-size: 0.68rem;
+        }
+
+        .warm-publishing-pipeline {
+            margin: 0 0 0.8rem;
+        }
+
+        .warm-publishing-pipeline-title {
+            margin-bottom: 0.45rem;
+            color: var(--warm-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .warm-publishing-pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 4px;
+        }
+
+        .warm-publishing-step {
+            min-width: 0;
+            padding: 0.45rem 0.35rem;
+            text-align: center;
+            background-color: var(--warm-background);
+            border-bottom: 3px solid var(--warm-gray);
+            border-radius: 5px;
+        }
+
+        .warm-publishing-step.is-idea {
+            border-bottom-color: var(--warm-yellow);
+        }
+
+        .warm-publishing-step.is-drafting {
+            border-bottom-color: var(--warm-pink);
+        }
+
+        .warm-publishing-step.is-visual {
+            border-bottom-color: var(--warm-lavender);
+        }
+
+        .warm-publishing-step.is-ready,
+        .warm-publishing-step.is-published {
+            border-bottom-color: var(--warm-mint);
+        }
+
+        .warm-publishing-step strong {
+            display: block;
+            color: var(--warm-text);
+            font-size: 1rem;
+            line-height: 1.15;
+        }
+
+        .warm-publishing-step span {
+            display: block;
+            margin-top: 0.18rem;
+            overflow: hidden;
+            color: var(--warm-muted);
+            font-size: 0.62rem;
+            line-height: 1.2;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .warm-project-progress {
             margin: 0.7rem 0 0.9rem;
             padding: 0.75rem 0.85rem;
@@ -756,6 +925,10 @@ def apply_warm_future_theme():
             .warm-pulse-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
+            .warm-publishing-pipeline-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
 
         @media (min-width: 701px) and (max-width: 1100px) {
@@ -816,6 +989,16 @@ def apply_warm_future_theme():
             margin: 0;
             color: var(--warm-muted);
             font-size: 0.84rem;
+        }
+
+        .warm-sidebar-north-star {
+            margin-top: 0.65rem !important;
+            padding-top: 0.55rem;
+            color: var(--warm-text) !important;
+            border-top: 1px solid var(--warm-border);
+            font-size: 0.72rem !important;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         .warm-sidebar-label {
@@ -1067,6 +1250,7 @@ def render_sidebar(last_refreshed):
                 <span class="lost-nomad-title-segment"></span>
             </div>
             <p>Personal command center</p>
+            <p class="warm-sidebar-north-star">Build the future, track the work.</p>
         </div>
 
         <p class="warm-sidebar-label">MAIN SECTIONS</p>
@@ -1274,6 +1458,91 @@ def render_mini_stats(container, items):
     )
 
 
+def display_text(value, fallback="Not set"):
+    if value is None:
+        return fallback
+
+    text = str(value).strip()
+    if not text or text.lower() == "nan":
+        return fallback
+    return escape(text)
+
+
+def render_active_project_cards(projects):
+    if not projects:
+        card_markup = '<div class="warm-empty-state">No active projects right now.</div>'
+    else:
+        cards = []
+        for project in projects:
+            priority = display_text(project.get("Priority"), "No priority")
+            priority_class = (
+                priority.lower()
+                if priority.lower() in {"high", "medium", "low"}
+                else "low"
+            )
+            updated = display_text(project.get("Last Updated"), "")
+            updated_markup = ""
+            if updated:
+                updated_markup = (
+                    '<div class="warm-active-project-updated">'
+                    f"<span>Updated</span> {updated}</div>"
+                )
+
+            cards.append(
+                f'<article class="warm-active-project-card">'
+                f'<h3>{display_text(project.get("Project"))}</h3>'
+                '<div class="warm-active-project-category">'
+                f'{display_text(project.get("Category"), "Uncategorized")}</div>'
+                '<div class="warm-active-project-meta">'
+                '<span class="warm-active-project-chip">'
+                f'{display_text(project.get("Stage"), "No stage")}</span>'
+                f'<span class="warm-active-project-chip is-{priority_class}">'
+                f'{priority}</span></div>'
+                '<p class="warm-active-project-action"><span>Next</span> '
+                f'{display_text(project.get("Next Action"))}</p>'
+                f'{updated_markup}</article>'
+            )
+        card_markup = f'<div class="warm-active-projects-grid">{"".join(cards)}</div>'
+
+    section_markup = (
+        '<section class="warm-active-projects-section">'
+        '<div class="warm-active-projects-heading">'
+        '<span class="warm-emoji-icon">🚀</span>Active Projects</div>'
+        '<p class="warm-active-projects-caption">'
+        'Current work and the next move for each active project.</p>'
+        f'{card_markup}</section>'
+    )
+    st.markdown(
+        section_markup,
+        unsafe_allow_html=True,
+    )
+
+
+def render_publishing_pipeline(container, status_counts):
+    stages = [
+        ("Idea", "idea"),
+        ("Drafting", "drafting"),
+        ("Needs Visual", "visual"),
+        ("Ready", "ready"),
+        ("Published", "published"),
+    ]
+    step_markup = "".join(
+        f'<div class="warm-publishing-step is-{tone}">'
+        f'<strong>{status_counts.get(label, 0)}</strong>'
+        f'<span>{label}</span></div>'
+        for label, tone in stages
+    )
+    pipeline_markup = (
+        '<div class="warm-publishing-pipeline">'
+        '<div class="warm-publishing-pipeline-title">Publishing Pipeline</div>'
+        f'<div class="warm-publishing-pipeline-grid">{step_markup}</div></div>'
+    )
+    container.markdown(
+        pipeline_markup,
+        unsafe_allow_html=True,
+    )
+
+
 def render_about_dashboard():
     st.markdown(
         """
@@ -1311,39 +1580,27 @@ def render_project_progress(container, status, stage):
         for step in range(1, 5)
     )
 
-    container.markdown(
-        f"""
-        <div class="warm-project-progress">
-            <div class="warm-project-progress-heading">
-                <strong>Project Progress</strong>
-                <span>Qualitative movement</span>
-            </div>
-            <div class="warm-project-progress-bar" aria-label="Qualitative project progress">
-                {segment_markup}
-            </div>
-            <div class="warm-project-progress-scale" aria-hidden="true">
-                <span>Plan</span><span>Build</span><span>Review</span><span>Ready</span>
-            </div>
-            <div class="warm-project-progress-meta">
-                <div class="warm-project-progress-meta-item">
-                    <span class="warm-project-progress-meta-label">Status</span>
-                    <span class="warm-project-progress-value"
-                        style="background-color: {status_background}; border-color: {status_border};">
-                        {escape(str(status))}
-                    </span>
-                </div>
-                <div class="warm-project-progress-meta-item">
-                    <span class="warm-project-progress-meta-label">Stage</span>
-                    <span class="warm-project-progress-value"
-                        style="background-color: {stage_background}; border-color: {stage_border};">
-                        {escape(str(stage))}
-                    </span>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    progress_markup = (
+        '<div class="warm-project-progress">'
+        '<div class="warm-project-progress-heading">'
+        '<strong>Project Progress</strong><span>Qualitative movement</span></div>'
+        '<div class="warm-project-progress-bar" '
+        f'aria-label="Qualitative project progress">{segment_markup}</div>'
+        '<div class="warm-project-progress-scale" aria-hidden="true">'
+        '<span>Plan</span><span>Build</span><span>Review</span><span>Ready</span></div>'
+        '<div class="warm-project-progress-meta">'
+        '<div class="warm-project-progress-meta-item">'
+        '<span class="warm-project-progress-meta-label">Status</span>'
+        '<span class="warm-project-progress-value" '
+        f'style="background-color: {status_background}; border-color: {status_border};">'
+        f'{escape(str(status))}</span></div>'
+        '<div class="warm-project-progress-meta-item">'
+        '<span class="warm-project-progress-meta-label">Stage</span>'
+        '<span class="warm-project-progress-value" '
+        f'style="background-color: {stage_background}; border-color: {stage_border};">'
+        f'{escape(str(stage))}</span></div></div></div>'
     )
+    container.markdown(progress_markup, unsafe_allow_html=True)
 
 
 def style_table_indicators(dataframe):

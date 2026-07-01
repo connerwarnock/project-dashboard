@@ -110,3 +110,10 @@ Streamlit, and Google Sheets attribution without competing with dashboard conten
   narrow left rail. Editable tables retain native priority controls.
 - The sidebar status legend uses small color dots rather than full explanatory
   cards. An About card may close the dashboard with concise product context.
+- Active projects may appear as a responsive card grid near the top of Overview;
+  each card stays compact and emphasizes its next action.
+- Recently Updated uses a short, date-sorted table rather than a timeline. The
+  publishing pipeline uses five ordered status segments with counts and no
+  editing controls.
+- The Lost Nomad North Star line belongs in the sidebar brand card and should
+  remain quieter than the app title.
