@@ -481,6 +481,14 @@ def apply_warm_future_theme():
             margin: 0.2rem;
         }
 
+        [data-testid="stDataFrame"] {
+            border-top: 2px solid #BFEAE7;
+        }
+
+        [data-testid="stDataEditor"] {
+            border-top: 2px solid #F2CDD6;
+        }
+
         [data-testid="stVerticalBlockBorderWrapper"] {
             padding: 1rem;
             margin: 0.45rem 0 1.05rem;
@@ -581,6 +589,64 @@ def apply_warm_future_theme():
             border: 1px dashed #B7E9E5;
             border-radius: 8px;
             font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .warm-mini-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem 0.65rem;
+            margin: 0 0 0.7rem;
+            padding: 0.42rem 0.6rem;
+            color: var(--warm-muted);
+            background-color: rgba(255, 249, 244, 0.62);
+            border: 1px solid var(--warm-border);
+            border-radius: 6px;
+            font-size: 0.72rem;
+            line-height: 1.35;
+        }
+
+        .warm-mini-stat {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.22rem;
+        }
+
+        .warm-mini-stat strong {
+            color: var(--warm-text);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .warm-about-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            margin: 0.5rem 0 1rem;
+            padding: 0.85rem 0.95rem;
+            background-color: #FFFCF9;
+            border: 1px solid var(--warm-border);
+            border-left: 3px solid var(--warm-turquoise);
+            border-radius: 8px;
+            box-shadow: 0 3px 12px rgba(71, 56, 50, 0.04);
+        }
+
+        .warm-about-icon {
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+
+        .warm-about-card strong {
+            display: block;
+            margin-bottom: 0.2rem;
+            color: var(--warm-text);
+            font-size: 0.82rem;
+        }
+
+        .warm-about-card p {
+            margin: 0;
+            color: var(--warm-muted);
+            font-size: 0.78rem;
             line-height: 1.45;
         }
 
@@ -872,6 +938,52 @@ def apply_warm_future_theme():
             content: "";
         }
 
+        .warm-sidebar-legend {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.35rem 0.45rem;
+            margin-bottom: 0.8rem;
+            padding: 0.7rem;
+            background-color: var(--warm-background);
+            border: 1px solid var(--warm-border);
+            border-radius: 8px;
+        }
+
+        .warm-sidebar-legend-item {
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            gap: 0.35rem;
+            color: var(--warm-muted);
+            font-size: 0.68rem;
+            line-height: 1.25;
+        }
+
+        .warm-sidebar-legend-dot {
+            width: 8px;
+            height: 8px;
+            flex: 0 0 8px;
+            background-color: var(--warm-gray);
+            border-radius: 50%;
+        }
+
+        .warm-sidebar-legend-dot.is-active {
+            background-color: var(--warm-turquoise);
+        }
+
+        .warm-sidebar-legend-dot.is-ready,
+        .warm-sidebar-legend-dot.is-published {
+            background-color: var(--warm-mint);
+        }
+
+        .warm-sidebar-legend-dot.is-blocked {
+            background-color: var(--warm-coral);
+        }
+
+        .warm-sidebar-legend-dot.is-reference {
+            background-color: var(--warm-yellow);
+        }
+
         .warm-sidebar-workflow p {
             margin: 0;
             color: var(--warm-text);
@@ -987,6 +1099,28 @@ def render_sidebar(last_refreshed):
                 <span><span class="warm-sidebar-meta-icon warm-emoji-icon">🕒</span>Last refreshed</span>
                 <strong>{safe_last_refreshed}</strong>
             </div>
+        </div>
+
+        <p class="warm-sidebar-label">STATUS LEGEND</p>
+        <div class="warm-sidebar-legend" aria-label="Status color legend">
+            <span class="warm-sidebar-legend-item">
+                <span class="warm-sidebar-legend-dot is-active"></span>Active
+            </span>
+            <span class="warm-sidebar-legend-item">
+                <span class="warm-sidebar-legend-dot"></span>Paused
+            </span>
+            <span class="warm-sidebar-legend-item">
+                <span class="warm-sidebar-legend-dot is-ready"></span>Ready
+            </span>
+            <span class="warm-sidebar-legend-item">
+                <span class="warm-sidebar-legend-dot is-published"></span>Published
+            </span>
+            <span class="warm-sidebar-legend-item">
+                <span class="warm-sidebar-legend-dot is-blocked"></span>Blocked / overdue
+            </span>
+            <span class="warm-sidebar-legend-item">
+                <span class="warm-sidebar-legend-dot is-reference"></span>Reference
+            </span>
         </div>
 
         <p class="warm-sidebar-label">WORKFLOW</p>
@@ -1129,6 +1263,33 @@ def render_empty_state(container, message):
     )
 
 
+def render_mini_stats(container, items):
+    stat_markup = "".join(
+        f'<span class="warm-mini-stat"><strong>{count}</strong>{escape(label)}</span>'
+        for count, label in items
+    )
+    container.markdown(
+        f'<div class="warm-mini-stats">{stat_markup}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+def render_about_dashboard():
+    st.markdown(
+        """
+        <div class="warm-about-card">
+            <span class="warm-about-icon warm-emoji-icon">🧭</span>
+            <div>
+                <strong>About this dashboard</strong>
+                <p>Built to track projects, publishing, research, and experiments
+                across the Lost Nomad ecosystem.</p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_project_progress(container, status, stage):
     status_background, status_border = STATUS_BADGE_STYLES.get(
         status,
@@ -1186,7 +1347,8 @@ def render_project_progress(container, status, stage):
 
 
 def style_table_indicators(dataframe):
-    if "Status" not in dataframe.columns and "Stage" not in dataframe.columns:
+    indicator_columns = {"Status", "Stage", "Priority"}
+    if not indicator_columns.intersection(dataframe.columns):
         return dataframe
 
     def indicator_style(value, styles, default_style):
@@ -1222,6 +1384,21 @@ def style_table_indicators(dataframe):
                 for value in values
             ],
             subset=["Stage"],
+        )
+
+    if "Priority" in dataframe.columns:
+        styled = styled.apply(
+            lambda values: [
+                (
+                    "background-color: #FFF2F5; "
+                    "border-left: 3px solid #E56B8A; "
+                    "color: #2F2A28; font-weight: 700;"
+                    if value == "High"
+                    else ""
+                )
+                for value in values
+            ],
+            subset=["Priority"],
         )
 
     return styled

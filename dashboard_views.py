@@ -20,8 +20,10 @@ from data_utils import (
 )
 from sheets_utils import GoogleSheetsError
 from ui_styles import (
+    render_about_dashboard,
     render_dashboard_hero,
     render_empty_state,
+    render_mini_stats,
     render_project_progress,
     render_weekly_pulse,
     section_card,
@@ -31,6 +33,7 @@ from ui_styles import (
 
 def render_edit_projects(projects):
     st.subheader("✏️ Edit Projects")
+    st.caption("Update project status, stage, priority, and next actions.")
 
     projects_for_edit = parse_date_column(projects, "Last Updated")
 
@@ -57,6 +60,7 @@ def render_edit_projects(projects):
 
 def render_edit_tasks(projects, tasks):
     st.subheader("✅ Edit Tasks")
+    st.caption("Manage task status, priority, and deadlines.")
 
     project_options = get_project_options(projects)
     tasks_for_edit = parse_date_column(tasks, "Due Date")
@@ -85,6 +89,7 @@ def render_edit_tasks(projects, tasks):
 
 def render_publishing_queue(projects, publishing_queue):
     st.subheader("📝 Publishing Queue")
+    st.caption("Plan and track outputs from idea through publication.")
 
     project_options = get_project_options(projects)
     queue_for_edit = parse_date_column(publishing_queue, "Publish Date")
@@ -129,6 +134,8 @@ def render_dashboard(projects, tasks, publishing_queue):
     today = pd.Timestamp.today().normalize()
 
     active_count = len(projects[projects["Status"] == "Active"])
+    paused_count = len(projects[projects["Status"] == "Paused"])
+    shipped_count = len(projects[projects["Status"] == "Shipped"])
     open_tasks = tasks[tasks["Status"] != "Done"].copy()
     overdue_tasks = open_tasks[
         open_tasks["Due Date Parsed"].notna()
@@ -153,15 +160,22 @@ def render_dashboard(projects, tasks, publishing_queue):
         stale_projects=len(stale_projects),
     )
     render_publishing_summary(publishing_queue, ready_output_count)
-    render_projects_overview(projects)
+    render_projects_overview(projects, active_count, paused_count, shipped_count)
     render_stale_projects(stale_projects)
-    render_next_actions(open_tasks)
+    render_next_actions(open_tasks, high_priority_count, len(overdue_tasks))
     render_deadlines(overdue_tasks, upcoming_tasks)
     render_project_detail(projects, tasks, project_options)
+    render_about_dashboard()
 
 
 def get_project_options(projects):
     return projects["Project"].dropna().unique().tolist()
+
+
+def count_label(count, singular, plural=None):
+    if count == 1:
+        return singular
+    return plural or f"{singular}s"
 
 
 def get_stale_projects(projects, today):
@@ -198,7 +212,17 @@ def render_publishing_summary(publishing_queue, ready_output_count):
     unpublished = publishing_queue[
         ~publishing_queue["Status"].isin(["Published", "Archived"])
     ]
+    drafting_count = len(publishing_queue[publishing_queue["Status"] == "Drafting"])
     published = publishing_queue[publishing_queue["Status"] == "Published"]
+
+    render_mini_stats(
+        card,
+        [
+            (drafting_count, count_label(drafting_count, "draft")),
+            (ready_output_count, count_label(ready_output_count, "ready", "ready")),
+            (len(published), count_label(len(published), "published", "published")),
+        ],
+    )
 
     col1, col2, col3 = card.columns(3)
     col1.metric("Unpublished Outputs", len(unpublished))
@@ -206,12 +230,21 @@ def render_publishing_summary(publishing_queue, ready_output_count):
     col3.metric("Published Outputs", len(published))
 
 
-def render_projects_overview(projects):
+def render_projects_overview(projects, active_count, paused_count, shipped_count):
     card = section_card("Projects Overview", "📁", "turquoise")
     card.caption("All current projects at a glance.")
 
     projects_overview = projects[projects["Status"] != "Archived"].copy()
     projects_overview = format_date_column(projects_overview, "Last Updated")
+
+    render_mini_stats(
+        card,
+        [
+            (active_count, count_label(active_count, "active", "active")),
+            (paused_count, count_label(paused_count, "paused", "paused")),
+            (shipped_count, count_label(shipped_count, "shipped", "shipped")),
+        ],
+    )
 
     render_dashboard_table(
         card,
@@ -231,9 +264,20 @@ def render_stale_projects(stale_projects):
     )
 
 
-def render_next_actions(open_tasks):
+def render_next_actions(open_tasks, high_priority_count, overdue_count):
     card = section_card("Next Actions", "📌", "pink")
     card.caption("High- and medium-priority work that needs attention.")
+    render_mini_stats(
+        card,
+        [
+            (len(open_tasks), count_label(len(open_tasks), "open", "open")),
+            (
+                high_priority_count,
+                count_label(high_priority_count, "high priority", "high priority"),
+            ),
+            (overdue_count, count_label(overdue_count, "overdue", "overdue")),
+        ],
+    )
 
     next_actions = open_tasks[
         open_tasks["Status"].isin(["Not Started", "Doing", "Blocked"])

@@ -128,6 +128,7 @@ full design notes.
 - Warm Future styling.
 - Lightweight icons in tabs, section headers, and the sidebar.
 - Sidebar with app metadata and workflow.
+- Sidebar status legend, section mini stats, and About dashboard card.
 - Google Sheets persistence.
 
 ## 11. Good Future Improvements

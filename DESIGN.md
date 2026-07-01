@@ -104,3 +104,9 @@ Streamlit, and Google Sheets attribution without competing with dashboard conten
   workflow into clear groups.
 - A faint, evenly spaced turquoise dot grid may sit behind the app as a subtle
   map-and-data texture. It must remain low contrast and never reduce readability.
+- Relevant sections may include one compact mini-stat line to summarize the
+  counts users need before scanning a table. Avoid duplicating full metric cards.
+- High-priority values in read-only task tables use a pale pink treatment and a
+  narrow left rail. Editable tables retain native priority controls.
+- The sidebar status legend uses small color dots rather than full explanatory
+  cards. An About card may close the dashboard with concise product context.
