@@ -177,6 +177,101 @@ def apply_warm_future_theme():
             border-color: var(--warm-coral);
         }
 
+        .warm-weekly-pulse {
+            margin: 0 0 1.1rem;
+            padding: 0.9rem 1rem 1rem;
+            background-color: var(--warm-surface);
+            border: 1px solid var(--warm-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(71, 56, 50, 0.04);
+        }
+
+        .warm-pulse-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .warm-pulse-heading strong {
+            display: block;
+            color: var(--warm-text);
+            font-size: 1rem;
+            font-weight: 650;
+        }
+
+        .warm-pulse-heading span:last-child {
+            color: var(--warm-muted);
+            font-size: 0.8rem;
+        }
+
+        .warm-pulse-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 0.45rem;
+        }
+
+        .warm-pulse-item {
+            min-width: 0;
+            padding: 0.55rem 0.65rem;
+            background-color: var(--warm-background);
+            border-left: 3px solid var(--warm-gray);
+            border-radius: 6px;
+        }
+
+        .warm-pulse-item.is-active {
+            border-left-color: var(--warm-turquoise);
+        }
+
+        .warm-pulse-item.is-open {
+            border-left-color: var(--warm-pink);
+        }
+
+        .warm-pulse-item.is-overdue {
+            border-left-color: var(--warm-coral);
+        }
+
+        .warm-pulse-item.is-upcoming {
+            border-left-color: var(--warm-yellow);
+        }
+
+        .warm-pulse-item.is-ready {
+            border-left-color: var(--warm-mint);
+        }
+
+        .warm-pulse-item.is-stale {
+            border-left-color: var(--warm-lavender);
+        }
+
+        .warm-pulse-label {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            min-height: 1.8rem;
+            color: var(--warm-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .warm-pulse-value {
+            margin-top: 0.2rem;
+            color: var(--warm-text);
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .warm-pulse-detail {
+            margin-top: 0.18rem;
+            overflow: hidden;
+            color: var(--warm-muted);
+            font-size: 0.68rem;
+            line-height: 1.25;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         [data-testid="stMetric"] {
             position: relative;
             min-height: 116px;
@@ -283,6 +378,16 @@ def apply_warm_future_theme():
             .warm-state-list {
                 justify-content: flex-start;
                 max-width: none;
+            }
+
+            .warm-pulse-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 701px) and (max-width: 1100px) {
+            .warm-pulse-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
         }
 
@@ -557,6 +662,63 @@ def render_dashboard_hero():
                 <span class="warm-state-badge is-published">Published</span>
                 <span class="warm-state-badge is-overdue">Overdue</span>
             </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_weekly_pulse(
+    active_projects,
+    open_tasks,
+    high_priority_tasks,
+    overdue_tasks,
+    upcoming_deadlines,
+    ready_outputs,
+    stale_projects,
+):
+    overdue_detail = "All clear" if overdue_tasks == 0 else "Worth a look"
+    stale_detail = "No drift" if stale_projects == 0 else "Could use a nudge"
+
+    pulse_items = [
+        ("📁", "Active projects", active_projects, "In motion", "active"),
+        (
+            "✅",
+            "Open tasks",
+            open_tasks,
+            f"{high_priority_tasks} high priority",
+            "open",
+        ),
+        ("🚨", "Overdue", overdue_tasks, overdue_detail, "overdue"),
+        ("⏰", "Coming up", upcoming_deadlines, "On the horizon", "upcoming"),
+        ("📝", "Ready to publish", ready_outputs, "Good to go", "ready"),
+        ("🕒", "Stale projects", stale_projects, stale_detail, "stale"),
+    ]
+
+    item_markup = "".join(
+        f"""
+        <div class="warm-pulse-item is-{tone}">
+            <div class="warm-pulse-label">
+                <span class="warm-emoji-icon">{icon}</span>{label}
+            </div>
+            <div class="warm-pulse-value">{value}</div>
+            <div class="warm-pulse-detail">{detail}</div>
+        </div>
+        """
+        for icon, label, value, detail, tone in pulse_items
+    )
+
+    st.markdown(
+        f"""
+        <div class="warm-weekly-pulse">
+            <div class="warm-pulse-heading">
+                <span class="warm-emoji-icon">📈</span>
+                <div>
+                    <strong>Weekly Pulse</strong>
+                    <span>A quick read on how things are moving.</span>
+                </div>
+            </div>
+            <div class="warm-pulse-grid">{item_markup}</div>
         </div>
         """,
         unsafe_allow_html=True,

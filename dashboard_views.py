@@ -22,6 +22,7 @@ from sheets_utils import GoogleSheetsError
 from ui_styles import (
     render_dashboard_hero,
     render_empty_state,
+    render_weekly_pulse,
     section_card,
     style_status_badges,
 )
@@ -136,12 +137,23 @@ def render_dashboard(projects, tasks, publishing_queue):
         open_tasks["Due Date Parsed"].notna()
         & (open_tasks["Due Date Parsed"] >= today)
     ].sort_values("Due Date Parsed")
+    stale_projects = get_stale_projects(projects, today)
+    ready_output_count = len(publishing_queue[publishing_queue["Status"] == "Ready"])
+    high_priority_count = len(open_tasks[open_tasks["Priority"] == "High"])
 
     render_dashboard_hero()
-    render_metrics(active_count, open_tasks, overdue_tasks)
-    render_publishing_summary(publishing_queue)
+    render_weekly_pulse(
+        active_projects=active_count,
+        open_tasks=len(open_tasks),
+        high_priority_tasks=high_priority_count,
+        overdue_tasks=len(overdue_tasks),
+        upcoming_deadlines=len(upcoming_tasks),
+        ready_outputs=ready_output_count,
+        stale_projects=len(stale_projects),
+    )
+    render_publishing_summary(publishing_queue, ready_output_count)
     render_projects_overview(projects)
-    render_stale_projects(projects, today)
+    render_stale_projects(stale_projects)
     render_next_actions(open_tasks)
     render_deadlines(overdue_tasks, upcoming_tasks)
     render_project_detail(projects, tasks, project_options)
@@ -149,6 +161,21 @@ def render_dashboard(projects, tasks, publishing_queue):
 
 def get_project_options(projects):
     return projects["Project"].dropna().unique().tolist()
+
+
+def get_stale_projects(projects, today):
+    projects_with_dates = projects.copy()
+    projects_with_dates["Last Updated Parsed"] = pd.to_datetime(
+        projects_with_dates["Last Updated"],
+        errors="coerce",
+    )
+    stale_cutoff = today - pd.Timedelta(days=14)
+
+    return projects_with_dates[
+        projects_with_dates["Status"].isin(["Active", "Paused", "Needs Review"])
+        & projects_with_dates["Last Updated Parsed"].notna()
+        & (projects_with_dates["Last Updated Parsed"] < stale_cutoff)
+    ]
 
 
 def render_dashboard_table(card, dataframe, empty_message):
@@ -163,27 +190,18 @@ def render_dashboard_table(card, dataframe, empty_message):
     )
 
 
-def render_metrics(active_count, open_tasks, overdue_tasks):
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Active Projects", active_count)
-    col2.metric("Open Tasks", len(open_tasks))
-    col3.metric("High-Priority Open Tasks", len(open_tasks[open_tasks["Priority"] == "High"]))
-    col4.metric("Overdue Tasks", len(overdue_tasks))
-
-
-def render_publishing_summary(publishing_queue):
+def render_publishing_summary(publishing_queue, ready_output_count):
     card = section_card("Publishing Queue Summary", "📝")
     card.caption("A quick pulse on what is moving toward publication.")
 
     unpublished = publishing_queue[
         ~publishing_queue["Status"].isin(["Published", "Archived"])
     ]
-    ready = publishing_queue[publishing_queue["Status"] == "Ready"]
     published = publishing_queue[publishing_queue["Status"] == "Published"]
 
     col1, col2, col3 = card.columns(3)
     col1.metric("Unpublished Outputs", len(unpublished))
-    col2.metric("Ready to Publish", len(ready))
+    col2.metric("Ready to Publish", ready_output_count)
     col3.metric("Published Outputs", len(published))
 
 
@@ -201,23 +219,9 @@ def render_projects_overview(projects):
     )
 
 
-def render_stale_projects(projects, today):
+def render_stale_projects(stale_projects):
     card = section_card("Stale Projects", "🕒")
     card.caption("Active work not updated in the last 14 days.")
-
-    projects_with_dates = projects.copy()
-    projects_with_dates["Last Updated Parsed"] = pd.to_datetime(
-        projects_with_dates["Last Updated"],
-        errors="coerce",
-    )
-
-    stale_cutoff = today - pd.Timedelta(days=14)
-
-    stale_projects = projects_with_dates[
-        projects_with_dates["Status"].isin(["Active", "Paused", "Needs Review"])
-        & projects_with_dates["Last Updated Parsed"].notna()
-        & (projects_with_dates["Last Updated Parsed"] < stale_cutoff)
-    ]
 
     render_dashboard_table(
         card,

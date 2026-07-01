@@ -120,6 +120,7 @@ full design notes.
 - Overdue Tasks.
 - Upcoming Deadlines.
 - Publishing summary.
+- Weekly Pulse overview strip.
 - Project Detail.
 - Warm Future styling.
 - Lightweight icons in tabs, section headers, and the sidebar.
@@ -128,7 +129,6 @@ full design notes.
 
 ## 11. Good Future Improvements
 
-- Add a weekly pulse strip.
 - Add an Ideas Backlog.
 - Add an Assets tracker.
 - Add access control or a private deployment.

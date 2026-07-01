@@ -53,3 +53,10 @@ Use small emoji icons to improve scanning in section headers, tabs, and compact
 sidebar labels. Icons should support a clear label rather than replace it. Keep
 them out of dense tables and repeated controls, and use the platform emoji font
 stack so Inter remains the primary interface typeface.
+
+## Weekly Pulse
+
+The Weekly Pulse is a compact overview band below the dashboard command center.
+It reuses status calculations from the main dashboard and presents them as six
+small, responsive cells. Use casual supporting copy and palette-colored edge
+accents without introducing a strict daily workflow.
