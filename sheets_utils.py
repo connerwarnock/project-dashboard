@@ -47,6 +47,40 @@ def read_worksheet(worksheet_name):
     return pd.DataFrame(values[1:], columns=values[0])
 
 
+def read_or_create_worksheet(worksheet_name, columns):
+    try:
+        spreadsheet = get_spreadsheet()
+        try:
+            worksheet = spreadsheet.worksheet(worksheet_name)
+        except gspread.exceptions.WorksheetNotFound:
+            worksheet = spreadsheet.add_worksheet(
+                title=worksheet_name,
+                rows=100,
+                cols=len(columns),
+            )
+        if worksheet.col_count < len(columns):
+            worksheet.resize(cols=len(columns))
+        values = worksheet.get_all_values()
+        if not values:
+            worksheet.update(
+                values=[columns],
+                range_name="A1",
+                value_input_option="RAW",
+            )
+            values = [columns]
+    except GoogleSheetsError:
+        raise
+    except Exception as error:
+        raise GoogleSheetsError(
+            f'Could not prepare the Google Sheets worksheet "{worksheet_name}".'
+        ) from error
+
+    if len(values) <= 1:
+        return pd.DataFrame(columns=columns)
+
+    return pd.DataFrame(values[1:], columns=values[0])
+
+
 def write_worksheet(worksheet_name, dataframe):
     cleaned = dataframe.astype(object).where(pd.notna(dataframe), "")
     values = [cleaned.columns.tolist()] + cleaned.values.tolist()

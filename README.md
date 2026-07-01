@@ -14,6 +14,10 @@ Live data is stored in these Google Sheets worksheets:
 - `Tasks`
 - `Publishing Queue`
 
+AI-proposed changes are staged separately in the generated `AI Review`
+worksheet. They do not affect source data until explicitly approved and applied
+from the app.
+
 The local CSV files remain in the repository as backups:
 
 - `projects.csv`

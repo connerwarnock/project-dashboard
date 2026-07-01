@@ -61,6 +61,9 @@ Google Sheets contains these worksheet tabs:
 - `Tasks`
 - `Publishing Queue`
 
+The app also creates and uses an `AI Review` worksheet as a staging area. The
+three worksheets above remain the source of truth.
+
 The local CSV files remain as backups only. The app reads and writes Google
 Sheets through service account credentials.
 
@@ -116,7 +119,7 @@ full design notes.
 - Editable Tasks table.
 - Editable Publishing Queue.
 - Overview is the first and default landing tab, followed by Projects, Tasks,
-  and Publish.
+  Publish, and AI Review.
 - Projects Overview.
 - Active Project cards and Recently Updated appear near the top of Overview.
 - Stale Projects.
@@ -134,6 +137,7 @@ full design notes.
 - Sidebar status legend, section mini stats, and About dashboard card.
 - Sidebar North Star tagline: "Build the future, track the work."
 - Google Sheets persistence.
+- Human-approved AI Review staging and apply workflow.
 
 ## 11. Good Future Improvements
 
@@ -142,3 +146,33 @@ full design notes.
 - Add access control or a private deployment.
 - Improve charts and dashboard summaries.
 - Add tests or lightweight validation.
+
+## 12. AI Review Workflow
+
+AI Review stages proposed changes before they reach source worksheets. It is not
+an autonomous editor, and importing or approving a row does not apply it.
+
+The `AI Review` worksheet uses these columns:
+
+- `Generated At`
+- `Target Tab`
+- `Action`
+- `Record Key`
+- `Field`
+- `Current Value`
+- `Suggested Value`
+- `Reason`
+- `Approved`
+- `Applied`
+- `Applied At`
+
+Supported actions are `Update existing record` and `Add new record`. Updates
+identify a source row by its key (`Project`, `Task`, or `Output`) and apply only
+when `Current Value` still exactly matches the source. Adds use a JSON object in
+`Suggested Value`, with keys matching the target worksheet's existing columns.
+
+Suggestions can be pasted into the app as a JSON object, JSON array, or CSV
+using the AI Review column names. Imported rows are always reset to unapproved
+and unapplied. The user must check `Approved` and click `Apply Approved Changes`.
+Successful rows are marked `Applied` with an `Applied At` timestamp; invalid or
+stale rows remain unapplied and produce warnings.

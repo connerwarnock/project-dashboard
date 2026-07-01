@@ -1051,6 +1051,10 @@ def apply_warm_future_theme():
             background-color: #FFF6D8;
         }
 
+        .warm-sidebar-nav-icon.is-ai-review {
+            background-color: #EEEAFB;
+        }
+
         .warm-sidebar-meta-icon {
             display: inline-block;
             width: 1.15rem;
@@ -1266,6 +1270,9 @@ def render_sidebar(last_refreshed):
             </div>
             <div class="warm-sidebar-nav-item">
                 <span class="warm-sidebar-nav-icon warm-emoji-icon is-dashboard">📊</span>Dashboard
+            </div>
+            <div class="warm-sidebar-nav-item">
+                <span class="warm-sidebar-nav-icon warm-emoji-icon is-ai-review">🤖</span>AI Review
             </div>
         </div>
 

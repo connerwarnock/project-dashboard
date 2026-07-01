@@ -2,13 +2,14 @@ from datetime import datetime
 
 import streamlit as st
 
+from ai_review import render_ai_review
 from dashboard_views import (
     render_dashboard,
     render_edit_projects,
     render_edit_tasks,
     render_publishing_queue,
 )
-from data_utils import load_projects, load_publishing_queue, load_tasks
+from data_utils import load_ai_review, load_projects, load_publishing_queue, load_tasks
 from sheets_utils import GoogleSheetsError
 from ui_styles import (
     apply_warm_future_theme,
@@ -35,6 +36,7 @@ try:
     projects = load_projects()
     tasks = load_tasks()
     publishing_queue = load_publishing_queue()
+    ai_review_data = load_ai_review()
 except GoogleSheetsError as error:
     st.error(str(error))
     st.stop()
@@ -46,8 +48,8 @@ last_refreshed = (
 )
 render_sidebar(last_refreshed)
 
-overview_tab, projects_tab, tasks_tab, publish_tab = st.tabs(
-    ["📊 Overview", "📁 Projects", "✅ Tasks", "📝 Publish"]
+overview_tab, projects_tab, tasks_tab, publish_tab, ai_review_tab = st.tabs(
+    ["📊 Overview", "📁 Projects", "✅ Tasks", "📝 Publish", "🤖 AI Review"]
 )
 
 with overview_tab:
@@ -61,5 +63,8 @@ with tasks_tab:
 
 with publish_tab:
     render_publishing_queue(projects, publishing_queue)
+
+with ai_review_tab:
+    render_ai_review(projects, tasks, publishing_queue, ai_review_data)
 
 render_footer()

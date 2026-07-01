@@ -1,6 +1,32 @@
 PROJECTS_WORKSHEET = "Projects"
 TASKS_WORKSHEET = "Tasks"
 PUBLISHING_QUEUE_WORKSHEET = "Publishing Queue"
+AI_REVIEW_WORKSHEET = "AI Review"
+
+AI_REVIEW_COLUMNS = [
+    "Generated At",
+    "Target Tab",
+    "Action",
+    "Record Key",
+    "Field",
+    "Current Value",
+    "Suggested Value",
+    "Reason",
+    "Approved",
+    "Applied",
+    "Applied At",
+]
+AI_REVIEW_TARGETS = [
+    PROJECTS_WORKSHEET,
+    TASKS_WORKSHEET,
+    PUBLISHING_QUEUE_WORKSHEET,
+]
+AI_REVIEW_ACTIONS = ["Update existing record", "Add new record"]
+SOURCE_RECORD_KEYS = {
+    PROJECTS_WORKSHEET: "Project",
+    TASKS_WORKSHEET: "Task",
+    PUBLISHING_QUEUE_WORKSHEET: "Output",
+}
 
 PROJECT_STATUSES = [
     "Backlog",
