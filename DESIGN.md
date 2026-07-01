@@ -78,3 +78,13 @@ geometry, with the sidebar version scaled down. Other dashboard treatments may
 retain the lavender route detail. These motifs suggest navigation, maps, growth,
 and data. Keep them near major brand titles only. Do not add large logos, heavy
 imagery, or decorative motion.
+
+## Tables and Metadata
+
+Dataframes and editors use only wrapper-level spacing, warm borders, and modest
+font sizing so native Streamlit sorting, scrolling, editing, and toolbars remain
+usable. Avoid CSS that changes grid canvas dimensions or clips toolbar controls.
+
+The sidebar shows the render-time refresh timestamp after Google Sheets data has
+loaded successfully. A quiet footer closes the app with Lost Nomad, Warm Future,
+Streamlit, and Google Sheets attribution without competing with dashboard content.

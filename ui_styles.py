@@ -427,9 +427,25 @@ def apply_warm_future_theme():
 
         [data-testid="stDataFrame"],
         [data-testid="stDataEditor"] {
+            margin: 0.35rem 0 0.7rem;
+            box-sizing: border-box;
+            background-color: var(--warm-surface);
             border: 1px solid var(--warm-border);
             border-radius: 8px;
             box-shadow: 0 3px 12px rgba(71, 56, 50, 0.04);
+            font-size: 0.86rem;
+        }
+
+        [data-testid="stDataFrame"] [role="columnheader"],
+        [data-testid="stDataFrame"] [role="gridcell"],
+        [data-testid="stDataEditor"] [role="columnheader"],
+        [data-testid="stDataEditor"] [role="gridcell"] {
+            font-size: 0.84rem;
+        }
+
+        [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
+        [data-testid="stDataEditor"] [data-testid="stElementToolbar"] {
+            margin: 0.2rem;
         }
 
         [data-testid="stVerticalBlockBorderWrapper"] {
@@ -668,6 +684,21 @@ def apply_warm_future_theme():
             color: var(--warm-pink);
         }
 
+        .warm-footer {
+            margin-top: 1.8rem;
+            padding: 1rem 0 0.55rem;
+            color: var(--warm-muted);
+            border-top: 1px solid var(--warm-border);
+            font-size: 0.74rem;
+            line-height: 1.45;
+            text-align: center;
+        }
+
+        .warm-footer strong {
+            color: var(--warm-text);
+            font-weight: 600;
+        }
+
         .stButton > button {
             color: var(--warm-text);
             background-color: var(--warm-surface);
@@ -710,9 +741,11 @@ def render_app_header(title, subtitle):
     )
 
 
-def render_sidebar():
+def render_sidebar(last_refreshed):
+    safe_last_refreshed = escape(last_refreshed)
+
     st.sidebar.markdown(
-        """
+        f"""
         <div class="warm-sidebar-brand">
             <p class="warm-sidebar-eyebrow">LOST NOMAD</p>
             <h2>Project Dashboard</h2>
@@ -750,11 +783,27 @@ def render_sidebar():
                 <span><span class="warm-sidebar-meta-icon warm-emoji-icon">🔗</span>Storage</span>
                 <span class="warm-sidebar-connected">Connected</span>
             </div>
+            <div class="warm-sidebar-meta-row">
+                <span><span class="warm-sidebar-meta-icon warm-emoji-icon">🕒</span>Last refreshed</span>
+                <strong>{safe_last_refreshed}</strong>
+            </div>
         </div>
 
         <p class="warm-sidebar-label">WORKFLOW</p>
         <div class="warm-sidebar-workflow">
             <p>Plan <span>&rarr;</span> Build <span>&rarr;</span> Publish <span>&rarr;</span> Review</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_footer():
+    st.markdown(
+        """
+        <div class="warm-footer">
+            <strong>Lost Nomad</strong> &middot; Warm Future workspace &middot;
+            Built with Streamlit + Google Sheets
         </div>
         """,
         unsafe_allow_html=True,

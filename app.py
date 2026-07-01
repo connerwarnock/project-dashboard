@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import streamlit as st
 
 from dashboard_views import (
@@ -8,7 +10,12 @@ from dashboard_views import (
 )
 from data_utils import load_projects, load_publishing_queue, load_tasks
 from sheets_utils import GoogleSheetsError
-from ui_styles import apply_warm_future_theme, render_app_header, render_sidebar
+from ui_styles import (
+    apply_warm_future_theme,
+    render_app_header,
+    render_footer,
+    render_sidebar,
+)
 
 
 st.set_page_config(
@@ -32,7 +39,12 @@ except GoogleSheetsError as error:
     st.error(str(error))
     st.stop()
 
-render_sidebar()
+refreshed_at = datetime.now().astimezone()
+last_refreshed = (
+    f"{refreshed_at:%Y-%m-%d} "
+    f"{refreshed_at.strftime('%I:%M %p').lstrip('0')}"
+)
+render_sidebar(last_refreshed)
 
 tab1, tab2, tab3, tab4 = st.tabs(
     ["✏️ Edit Projects", "✅ Edit Tasks", "📰 Publishing Queue", "📊 View Dashboard"]
@@ -49,3 +61,5 @@ with tab3:
 
 with tab4:
     render_dashboard(projects, tasks, publishing_queue)
+
+render_footer()
