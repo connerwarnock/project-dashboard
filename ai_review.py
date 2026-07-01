@@ -51,13 +51,18 @@ def as_boolean(value):
     return as_text(value).lower() in {"true", "yes", "1", "checked"}
 
 
-def normalize_review(review):
-    normalized = review.copy()
+def normalize_review(review, set_generated_at=False):
+    if review is None:
+        normalized = pd.DataFrame()
+    else:
+        normalized = pd.DataFrame(review).copy()
+
+    normalized = normalized.loc[:, ~normalized.columns.duplicated()].copy()
     for column in AI_REVIEW_COLUMNS:
         if column not in normalized.columns:
             normalized[column] = False if column in {"Approved", "Applied"} else ""
 
-    normalized = normalized[AI_REVIEW_COLUMNS].copy()
+    normalized = normalized.reindex(columns=AI_REVIEW_COLUMNS).copy()
     for column in AI_REVIEW_COLUMNS:
         if column not in {"Approved", "Applied"}:
             normalized[column] = normalized[column].map(as_text)
@@ -74,14 +79,13 @@ def normalize_review(review):
         "Suggested Value",
         "Reason",
     ]
-    has_content = normalized[content_columns].apply(
-        lambda row: any(as_text(value) for value in row),
-        axis=1,
-    )
-    normalized = normalized[has_content].copy()
+    content = normalized[content_columns].apply(lambda column: column.map(as_text))
+    has_content = content.ne("").any(axis=1)
+    normalized = normalized.loc[has_content].copy()
 
-    missing_generated_at = normalized["Generated At"] == ""
-    normalized.loc[missing_generated_at, "Generated At"] = current_timestamp()
+    if set_generated_at and not normalized.empty:
+        missing_generated_at = normalized["Generated At"] == ""
+        normalized.loc[missing_generated_at, "Generated At"] = current_timestamp()
     return normalized.reset_index(drop=True)
 
 
@@ -114,7 +118,7 @@ def parse_import_text(pasted_text):
             lambda value: json.dumps(value) if isinstance(value, dict) else value
         )
 
-    imported = normalize_review(imported)
+    imported = normalize_review(imported, set_generated_at=True)
     if imported.empty:
         raise ValueError("No suggestion rows were found in the pasted content.")
 
@@ -226,7 +230,7 @@ def apply_add(source, target, suggestion):
 
 
 def apply_approved_changes(review, projects, tasks, publishing_queue):
-    normalized = normalize_review(review)
+    normalized = normalize_review(review, set_generated_at=True)
     sources = {
         PROJECTS_WORKSHEET: projects.copy(),
         TASKS_WORKSHEET: tasks.copy(),
@@ -378,7 +382,7 @@ def render_ai_review(projects, tasks, publishing_queue, ai_review):
     with save_col:
         if st.button("Save review changes", key="save_ai_review_button"):
             try:
-                save_ai_review(normalize_review(edited_review))
+                save_ai_review(normalize_review(edited_review, set_generated_at=True))
                 st.session_state["ai_review_notice"] = {
                     "message": "AI Review changes saved. Source sheets were not changed.",
                     "warnings": [],
