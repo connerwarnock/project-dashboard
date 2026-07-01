@@ -24,6 +24,44 @@ STATUS_BADGE_STYLES = {
 }
 DEFAULT_STATUS_BADGE_STYLE = ("#F3EFEC", "#D8CCC3")
 
+STAGE_BADGE_STYLES = {
+    "Planning": ("#FFF6D8", "#F7D97A"),
+    "Research": ("#EEEAFB", "#B8A7E8"),
+    "Dataset": ("#E6F8F6", "#63D5D0"),
+    "Charting": ("#FBE8ED", "#E56B8A"),
+    "Editing": ("#EEEAFB", "#B8A7E8"),
+    "Review": ("#EEEAFB", "#B8A7E8"),
+    "Ready": ("#E5F7EE", "#8ADDBA"),
+    "Publishing": ("#E5F7EE", "#8ADDBA"),
+    "Reference": ("#FFF6D8", "#F7D97A"),
+}
+DEFAULT_STAGE_BADGE_STYLE = ("#F3EFEC", "#D8CCC3")
+
+PROJECT_STATUS_PROGRESS = {
+    "Backlog": 1,
+    "Active": 2,
+    "Paused": 2,
+    "Needs Review": 3,
+    "Ready to Publish": 4,
+    "Shipped": 4,
+    "Archived": 4,
+    "Reference": 1,
+}
+
+PROJECT_STAGE_PROGRESS = {
+    "Planning": 1,
+    "Research": 1,
+    "Dataset": 1,
+    "Charting": 2,
+    "Drafting": 2,
+    "Building": 2,
+    "Editing": 3,
+    "Review": 3,
+    "Ready": 4,
+    "Publishing": 4,
+    "Reference": 1,
+}
+
 
 def apply_warm_future_theme():
     st.markdown(
@@ -48,6 +86,12 @@ def apply_warm_future_theme():
 
         .stApp {
             background-color: var(--warm-background);
+            background-image: radial-gradient(
+                circle,
+                rgba(99, 213, 208, 0.16) 0.85px,
+                transparent 1px
+            );
+            background-size: 22px 22px;
             color: var(--warm-text);
             font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
                 sans-serif;
@@ -85,52 +129,6 @@ def apply_warm_future_theme():
             font-size: 2.15rem;
             font-weight: 700;
             line-height: 1.2;
-        }
-
-        .lost-nomad-motif {
-            position: relative;
-            width: 88px;
-            height: 14px;
-            margin: 0.6rem 0 0.65rem;
-        }
-
-        .lost-nomad-motif::before {
-            position: absolute;
-            right: 8px;
-            bottom: 4px;
-            left: 0;
-            height: 2px;
-            background-color: var(--warm-turquoise);
-            border-radius: 2px;
-            content: "";
-        }
-
-        .lost-nomad-motif::after {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 10px;
-            height: 10px;
-            background-color: var(--warm-pink);
-            border: 2px solid var(--warm-background);
-            border-radius: 50%;
-            content: "";
-        }
-
-        .lost-nomad-route {
-            position: absolute;
-            top: 1px;
-            left: 22px;
-            width: 28px;
-            height: 7px;
-            border-top: 1px dashed var(--warm-lavender);
-            border-right: 1px solid var(--warm-lavender);
-            border-radius: 0 5px 0 0;
-        }
-
-        .lost-nomad-motif.is-compact {
-            width: 70px;
-            margin: 0 0 0.4rem;
         }
 
         .lost-nomad-title-accent {
@@ -198,7 +196,22 @@ def apply_warm_future_theme():
             margin-left: 3px;
         }
 
-        .warm-command-center .lost-nomad-motif::after {
+        .lost-nomad-title-accent.is-overview {
+            width: 70px;
+            margin: 0 0 0.4rem;
+        }
+
+        .lost-nomad-title-accent.is-overview .lost-nomad-title-line {
+            width: 52px;
+            flex-basis: 52px;
+        }
+
+        .lost-nomad-title-accent.is-overview .lost-nomad-title-segment {
+            width: 6px;
+            flex-basis: 6px;
+        }
+
+        .warm-command-center .lost-nomad-title-sun {
             border-color: var(--warm-surface);
         }
 
@@ -286,11 +299,11 @@ def apply_warm_future_theme():
 
         .warm-weekly-pulse {
             margin: 0 0 1.1rem;
-            padding: 0.9rem 1rem 1rem;
-            background-color: var(--warm-surface);
+            padding: 1rem 1.05rem 1.05rem;
+            background-color: #FFFDFB;
             border: 1px solid var(--warm-border);
             border-radius: 8px;
-            box-shadow: 0 4px 14px rgba(71, 56, 50, 0.04);
+            box-shadow: 0 5px 16px rgba(71, 56, 50, 0.055);
         }
 
         .warm-pulse-heading {
@@ -315,38 +328,52 @@ def apply_warm_future_theme():
         .warm-pulse-grid {
             display: grid;
             grid-template-columns: repeat(6, minmax(0, 1fr));
-            gap: 0.45rem;
+            gap: 0.6rem;
         }
 
         .warm-pulse-item {
             min-width: 0;
-            padding: 0.55rem 0.65rem;
+            padding: 0.7rem 0.75rem;
             background-color: var(--warm-background);
-            border-left: 3px solid var(--warm-gray);
-            border-radius: 6px;
+            border: 1px solid var(--warm-border);
+            border-left: 4px solid var(--warm-gray);
+            border-radius: 8px;
+            box-shadow: 0 2px 7px rgba(71, 56, 50, 0.035);
         }
 
         .warm-pulse-item.is-active {
+            background-color: #F4FCFB;
+            border-color: #D7F1EE;
             border-left-color: var(--warm-turquoise);
         }
 
         .warm-pulse-item.is-open {
+            background-color: #FFF7F9;
+            border-color: #F5DDE3;
             border-left-color: var(--warm-pink);
         }
 
         .warm-pulse-item.is-overdue {
+            background-color: #FFF8F7;
+            border-color: #F6DEDB;
             border-left-color: var(--warm-coral);
         }
 
         .warm-pulse-item.is-upcoming {
+            background-color: #FFFCF1;
+            border-color: #F6EBC8;
             border-left-color: var(--warm-yellow);
         }
 
         .warm-pulse-item.is-ready {
+            background-color: #F5FCF8;
+            border-color: #D6EEE2;
             border-left-color: var(--warm-mint);
         }
 
         .warm-pulse-item.is-stale {
+            background-color: #FAF8FE;
+            border-color: #E5DFF6;
             border-left-color: var(--warm-lavender);
         }
 
@@ -356,7 +383,7 @@ def apply_warm_future_theme():
             gap: 0.35rem;
             min-height: 1.8rem;
             color: var(--warm-muted);
-            font-size: 0.72rem;
+            font-size: 0.69rem;
             font-weight: 600;
             line-height: 1.2;
         }
@@ -364,7 +391,7 @@ def apply_warm_future_theme():
         .warm-pulse-value {
             margin-top: 0.2rem;
             color: var(--warm-text);
-            font-size: 1.35rem;
+            font-size: 1.82rem;
             font-weight: 700;
             line-height: 1.15;
         }
@@ -402,7 +429,13 @@ def apply_warm_future_theme():
 
         [data-testid="stMetricValue"] {
             color: var(--warm-text);
+            font-size: 1.55rem;
             font-weight: 700;
+        }
+
+        [data-testid="stMetricLabel"] {
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
         .stTabs [data-baseweb="tab-list"] {
@@ -457,6 +490,41 @@ def apply_warm_future_theme():
             box-shadow: 0 3px 14px rgba(71, 56, 50, 0.045);
         }
 
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-turquoise) {
+            background-color: #FBFEFD;
+            border-left: 2px solid var(--warm-turquoise) !important;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-pink) {
+            background-color: #FFFBFC;
+            border-left: 2px solid var(--warm-pink) !important;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-yellow) {
+            background-color: #FFFDF8;
+            border-left: 2px solid var(--warm-yellow) !important;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-mint) {
+            background-color: #FBFEFC;
+            border-left: 2px solid var(--warm-mint) !important;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-lavender) {
+            background-color: #FDFCFF;
+            border-left: 2px solid var(--warm-lavender) !important;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-coral) {
+            background-color: #FFFCFB;
+            border-left: 2px solid var(--warm-coral) !important;
+        }
+
+        [data-testid="stVerticalBlockBorderWrapper"]:has(.warm-future-section-header.is-gray) {
+            background-color: #FDFCFB;
+            border-left: 2px solid var(--warm-gray) !important;
+        }
+
         .warm-future-section-header {
             display: flex;
             align-items: center;
@@ -468,6 +536,30 @@ def apply_warm_future_theme():
             font-size: 1.2rem;
             font-weight: 600;
             line-height: 1.35;
+        }
+
+        .warm-future-section-header.is-pink {
+            border-left-color: var(--warm-pink);
+        }
+
+        .warm-future-section-header.is-yellow {
+            border-left-color: var(--warm-yellow);
+        }
+
+        .warm-future-section-header.is-mint {
+            border-left-color: var(--warm-mint);
+        }
+
+        .warm-future-section-header.is-lavender {
+            border-left-color: var(--warm-lavender);
+        }
+
+        .warm-future-section-header.is-coral {
+            border-left-color: var(--warm-coral);
+        }
+
+        .warm-future-section-header.is-gray {
+            border-left-color: var(--warm-gray);
         }
 
         .warm-future-section-icon {
@@ -490,6 +582,98 @@ def apply_warm_future_theme():
             border-radius: 8px;
             font-size: 0.9rem;
             line-height: 1.45;
+        }
+
+        .warm-project-progress {
+            margin: 0.7rem 0 0.9rem;
+            padding: 0.75rem 0.85rem;
+            background-color: rgba(255, 249, 244, 0.72);
+            border: 1px solid var(--warm-border);
+            border-radius: 8px;
+        }
+
+        .warm-project-progress-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .warm-project-progress-heading strong {
+            color: var(--warm-text);
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .warm-project-progress-heading span {
+            color: var(--warm-muted);
+            font-size: 0.7rem;
+        }
+
+        .warm-project-progress-bar {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 4px;
+        }
+
+        .warm-project-progress-segment {
+            height: 8px;
+            background-color: #ECE5E0;
+            border-radius: 4px;
+        }
+
+        .warm-project-progress-segment.is-filled {
+            background-color: var(--warm-turquoise);
+        }
+
+        .warm-project-progress-segment.is-current {
+            background-color: var(--warm-pink);
+            box-shadow: 0 0 0 2px rgba(247, 217, 122, 0.3);
+        }
+
+        .warm-project-progress-scale {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-top: 0.35rem;
+            color: var(--warm-muted);
+            font-size: 0.62rem;
+        }
+
+        .warm-project-progress-scale span {
+            text-align: center;
+        }
+
+        .warm-project-progress-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-top: 0.65rem;
+        }
+
+        .warm-project-progress-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .warm-project-progress-meta-label {
+            color: var(--warm-muted);
+            font-size: 0.66rem;
+            font-weight: 600;
+        }
+
+        .warm-project-progress-value {
+            display: inline-block;
+            max-width: 100%;
+            padding: 0.2rem 0.45rem;
+            color: var(--warm-text);
+            border: 1px solid var(--warm-border);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
         }
 
         @media (max-width: 700px) {
@@ -517,7 +701,7 @@ def apply_warm_future_theme():
         [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stMetric"] {
             min-height: 96px;
             padding: 0.65rem 0.8rem;
-            background-color: transparent;
+            background-color: rgba(255, 249, 244, 0.72);
             border: 0;
             border-left: 3px solid var(--warm-pink);
             border-radius: 0;
@@ -539,8 +723,12 @@ def apply_warm_future_theme():
 
         .warm-sidebar-brand {
             margin-bottom: 1rem;
-            padding: 0.2rem 0.15rem 1rem;
-            border-bottom: 1px solid var(--warm-border);
+            padding: 0.95rem;
+            background-color: #FFF9FA;
+            border: 1px solid #EEDDE1;
+            border-top: 3px solid var(--warm-turquoise);
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(71, 56, 50, 0.06);
         }
 
         .warm-sidebar-brand p.warm-sidebar-eyebrow {
@@ -628,6 +816,18 @@ def apply_warm_future_theme():
             background-color: var(--warm-background);
             border: 1px solid var(--warm-border);
             border-radius: 8px;
+        }
+
+        .warm-sidebar-meta {
+            background-color: #F8FCFA;
+            border-color: #D7EDE1;
+            border-top: 3px solid var(--warm-mint);
+            box-shadow: 0 3px 10px rgba(71, 56, 50, 0.035);
+        }
+
+        .warm-sidebar-workflow {
+            background-color: #FFFDF5;
+            border-color: #EFE5C4;
         }
 
         .warm-sidebar-meta-row {
@@ -815,8 +1015,10 @@ def render_dashboard_hero():
         """
         <div class="warm-command-center">
             <div>
-                <div class="lost-nomad-motif is-compact" aria-hidden="true">
-                    <span class="lost-nomad-route"></span>
+                <div class="lost-nomad-title-accent is-overview" aria-hidden="true">
+                    <span class="lost-nomad-title-line"></span>
+                    <span class="lost-nomad-title-sun"></span>
+                    <span class="lost-nomad-title-segment"></span>
                 </div>
                 <h2><span class="warm-emoji-icon">📊</span> Lost Nomad Project Command Center</h2>
                 <p>Tracking projects, publishing, and optimistic futures.</p>
@@ -892,7 +1094,7 @@ def render_weekly_pulse(
     )
 
 
-def section_card(title, icon=None):
+def section_card(title, icon=None, tone="turquoise"):
     card = st.container(border=True)
     icon_markup = ""
     if icon:
@@ -901,8 +1103,19 @@ def section_card(title, icon=None):
             f"{escape(icon)}</span>"
         )
 
+    allowed_tones = {
+        "turquoise",
+        "pink",
+        "yellow",
+        "mint",
+        "lavender",
+        "coral",
+        "gray",
+    }
+    safe_tone = tone if tone in allowed_tones else "turquoise"
+
     card.markdown(
-        '<div class="warm-future-section-header">'
+        f'<div class="warm-future-section-header is-{safe_tone}">'
         f"{icon_markup}<span>{escape(title)}</span></div>",
         unsafe_allow_html=True,
     )
@@ -916,14 +1129,70 @@ def render_empty_state(container, message):
     )
 
 
-def style_status_badges(dataframe):
-    if "Status" not in dataframe.columns:
+def render_project_progress(container, status, stage):
+    status_background, status_border = STATUS_BADGE_STYLES.get(
+        status,
+        DEFAULT_STATUS_BADGE_STYLE,
+    )
+    stage_background, stage_border = STAGE_BADGE_STYLES.get(
+        stage,
+        DEFAULT_STAGE_BADGE_STYLE,
+    )
+    progress_step = max(
+        PROJECT_STATUS_PROGRESS.get(status, 1),
+        PROJECT_STAGE_PROGRESS.get(stage, 1),
+    )
+    segment_markup = "".join(
+        '<span class="warm-project-progress-segment'
+        f"{' is-filled' if step <= progress_step else ''}"
+        f"{' is-current' if step == progress_step else ''}"
+        '"></span>'
+        for step in range(1, 5)
+    )
+
+    container.markdown(
+        f"""
+        <div class="warm-project-progress">
+            <div class="warm-project-progress-heading">
+                <strong>Project Progress</strong>
+                <span>Qualitative movement</span>
+            </div>
+            <div class="warm-project-progress-bar" aria-label="Qualitative project progress">
+                {segment_markup}
+            </div>
+            <div class="warm-project-progress-scale" aria-hidden="true">
+                <span>Plan</span><span>Build</span><span>Review</span><span>Ready</span>
+            </div>
+            <div class="warm-project-progress-meta">
+                <div class="warm-project-progress-meta-item">
+                    <span class="warm-project-progress-meta-label">Status</span>
+                    <span class="warm-project-progress-value"
+                        style="background-color: {status_background}; border-color: {status_border};">
+                        {escape(str(status))}
+                    </span>
+                </div>
+                <div class="warm-project-progress-meta-item">
+                    <span class="warm-project-progress-meta-label">Stage</span>
+                    <span class="warm-project-progress-value"
+                        style="background-color: {stage_background}; border-color: {stage_border};">
+                        {escape(str(stage))}
+                    </span>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def style_table_indicators(dataframe):
+    if "Status" not in dataframe.columns and "Stage" not in dataframe.columns:
         return dataframe
 
-    def status_style(value):
-        background, border = STATUS_BADGE_STYLES.get(
+    def indicator_style(value, styles, default_style):
+        background, border = styles.get(
             value,
-            DEFAULT_STATUS_BADGE_STYLE,
+            default_style,
         )
 
         return (
@@ -935,7 +1204,24 @@ def style_status_badges(dataframe):
             "border-radius: 6px;"
         )
 
-    return dataframe.style.apply(
-        lambda statuses: [status_style(status) for status in statuses],
-        subset=["Status"],
-    )
+    styled = dataframe.style
+
+    if "Status" in dataframe.columns:
+        styled = styled.apply(
+            lambda values: [
+                indicator_style(value, STATUS_BADGE_STYLES, DEFAULT_STATUS_BADGE_STYLE)
+                for value in values
+            ],
+            subset=["Status"],
+        )
+
+    if "Stage" in dataframe.columns:
+        styled = styled.apply(
+            lambda values: [
+                indicator_style(value, STAGE_BADGE_STYLES, DEFAULT_STAGE_BADGE_STYLE)
+                for value in values
+            ],
+            subset=["Stage"],
+        )
+
+    return styled

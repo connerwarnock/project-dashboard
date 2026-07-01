@@ -22,9 +22,10 @@ from sheets_utils import GoogleSheetsError
 from ui_styles import (
     render_dashboard_hero,
     render_empty_state,
+    render_project_progress,
     render_weekly_pulse,
     section_card,
-    style_status_badges,
+    style_table_indicators,
 )
 
 
@@ -184,14 +185,14 @@ def render_dashboard_table(card, dataframe, empty_message):
         return
 
     card.dataframe(
-        style_status_badges(dataframe),
+        style_table_indicators(dataframe),
         use_container_width=True,
         hide_index=True,
     )
 
 
 def render_publishing_summary(publishing_queue, ready_output_count):
-    card = section_card("Publishing Queue Summary", "📝")
+    card = section_card("Publishing Queue Summary", "📝", "lavender")
     card.caption("A quick pulse on what is moving toward publication.")
 
     unpublished = publishing_queue[
@@ -206,7 +207,7 @@ def render_publishing_summary(publishing_queue, ready_output_count):
 
 
 def render_projects_overview(projects):
-    card = section_card("Projects Overview", "📁")
+    card = section_card("Projects Overview", "📁", "turquoise")
     card.caption("All current projects at a glance.")
 
     projects_overview = projects[projects["Status"] != "Archived"].copy()
@@ -220,7 +221,7 @@ def render_projects_overview(projects):
 
 
 def render_stale_projects(stale_projects):
-    card = section_card("Stale Projects", "🕒")
+    card = section_card("Stale Projects", "🕒", "gray")
     card.caption("Active work not updated in the last 14 days.")
 
     render_dashboard_table(
@@ -231,7 +232,7 @@ def render_stale_projects(stale_projects):
 
 
 def render_next_actions(open_tasks):
-    card = section_card("Next Actions", "📌")
+    card = section_card("Next Actions", "📌", "pink")
     card.caption("High- and medium-priority work that needs attention.")
 
     next_actions = open_tasks[
@@ -258,7 +259,7 @@ def render_next_actions(open_tasks):
 
 
 def render_deadlines(overdue_tasks, upcoming_tasks):
-    overdue_card = section_card("Overdue Tasks", "🚨")
+    overdue_card = section_card("Overdue Tasks", "🚨", "coral")
     overdue_card.caption("Open tasks that have passed their due date.")
     render_dashboard_table(
         overdue_card,
@@ -266,7 +267,7 @@ def render_deadlines(overdue_tasks, upcoming_tasks):
         "No overdue tasks. Nice.",
     )
 
-    upcoming_card = section_card("Upcoming Deadlines", "⏰")
+    upcoming_card = section_card("Upcoming Deadlines", "⏰", "yellow")
     upcoming_card.caption("Open tasks with due dates ahead.")
     render_dashboard_table(
         upcoming_card,
@@ -276,7 +277,7 @@ def render_deadlines(overdue_tasks, upcoming_tasks):
 
 
 def render_project_detail(projects, tasks, project_options):
-    card = section_card("Project Detail", "🧭")
+    card = section_card("Project Detail", "🧭", "mint")
     card.caption("Inspect the current focus and task list for one project.")
 
     selected_project_detail = card.selectbox(
@@ -295,6 +296,12 @@ def render_project_detail(projects, tasks, project_options):
         col1.metric("Status", project_info["Status"])
         col2.metric("Priority", project_info["Priority"])
         col3.metric("Stage", project_info["Stage"])
+
+        render_project_progress(
+            card,
+            project_info["Status"],
+            project_info["Stage"],
+        )
 
         card.write(f"**Next Action:** {project_info['Next Action']}")
         card.write(f"**Last Updated:** {project_info.get('Last Updated', '')}")

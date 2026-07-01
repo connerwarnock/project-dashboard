@@ -74,10 +74,9 @@ The main title uses a short turquoise horizon line, a small pink sun, and a
 restrained yellow continuation segment. The tiny gap and continuation suggest a
 route or forward motion without reading as a loading bar. Compact sidebar and
 main-title treatments use the same flex-aligned horizon, sun, and continuation
-geometry, with the sidebar version scaled down. Other dashboard treatments may
-retain the lavender route detail. These motifs suggest navigation, maps, growth,
-and data. Keep them near major brand titles only. Do not add large logos, heavy
-imagery, or decorative motion.
+geometry, with the sidebar and dashboard overview versions scaled down. These
+motifs suggest navigation, maps, growth, and data. Keep them near major brand
+titles only. Do not add large logos, heavy imagery, or decorative motion.
 
 ## Tables and Metadata
 
@@ -88,3 +87,20 @@ usable. Avoid CSS that changes grid canvas dimensions or clips toolbar controls.
 The sidebar shows the render-time refresh timestamp after Google Sheets data has
 loaded successfully. A quiet footer closes the app with Lost Nomad, Warm Future,
 Streamlit, and Google Sheets attribution without competing with dashboard content.
+
+## Dashboard Polish
+
+- Weekly Pulse values are the strongest element in each compact metric cell;
+  labels and supporting notes remain small and quiet.
+- Read-only project tables use pale status and stage chips for classification;
+  they are not progress bars. Editable tables keep native Streamlit controls.
+- Project Detail includes a four-segment qualitative progress bar labeled Plan,
+  Build, Review, and Ready. Existing Status and Stage values determine the
+  filled segments, with the farther-along mapping used. The bar intentionally
+  has no numeric percentage and should not be treated as a precise estimate.
+- Major section headers rotate through restrained palette-colored accent rails
+  to improve scanning without changing card structure.
+- The sidebar separates Lost Nomad branding, navigation, system metadata, and
+  workflow into clear groups.
+- A faint, evenly spaced turquoise dot grid may sit behind the app as a subtle
+  map-and-data texture. It must remain low contrast and never reduce readability.
