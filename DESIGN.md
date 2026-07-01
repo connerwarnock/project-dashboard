@@ -60,3 +60,21 @@ The Weekly Pulse is a compact overview band below the dashboard command center.
 It reuses status calculations from the main dashboard and presents them as six
 small, responsive cells. Use casual supporting copy and palette-colored edge
 accents without introducing a strict daily workflow.
+
+## Lost Nomad Branding
+
+Lost Nomad is the personal and public brand carried by the dashboard. Its themes
+include Florida and the Sunbelt, YIMBY growth and urbanism, optimistic futurism,
+demographics and fertility, American liberal patriotism, global curiosity,
+tropical vitalism, and data-backed public writing. It should feel research-led
+and future-oriented rather than like generic travel content.
+
+Lost Nomad sits inside the Warm Future visual system rather than replacing it.
+The main title uses a short turquoise horizon line, a small pink sun, and a
+restrained yellow continuation segment. The tiny gap and continuation suggest a
+route or forward motion without reading as a loading bar. Compact sidebar and
+main-title treatments use the same flex-aligned horizon, sun, and continuation
+geometry, with the sidebar version scaled down. Other dashboard treatments may
+retain the lavender route detail. These motifs suggest navigation, maps, growth,
+and data. Keep them near major brand titles only. Do not add large logos, heavy
+imagery, or decorative motion.

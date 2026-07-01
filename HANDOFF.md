@@ -95,6 +95,8 @@ full design notes.
 - Soft coral: `#F2A6A0`
 - Feel: clean, warm, modern, lightweight, and lightly optimistic.
 - Use a short turquoise accent rule near major titles where appropriate.
+- Lost Nomad branding uses a turquoise horizon, pink sun, and subtle route-line
+  motif to connect public writing, optimistic futures, navigation, and data.
 
 ## 9. User Preferences
 
@@ -122,6 +124,7 @@ full design notes.
 - Publishing summary.
 - Weekly Pulse overview strip.
 - Project Detail.
+- Lost Nomad branding in the main header, dashboard hero, and sidebar.
 - Warm Future styling.
 - Lightweight icons in tabs, section headers, and the sidebar.
 - Sidebar with app metadata and workflow.

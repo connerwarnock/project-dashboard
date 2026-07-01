@@ -20,8 +20,8 @@ st.set_page_config(
 apply_warm_future_theme()
 
 render_app_header(
-    "Project Dashboard",
-    "Projects, tasks, and publishing in one clear view.",
+    "Lost Nomad Dashboard",
+    "A Warm Future workspace for research, charts, and public writing.",
 )
 
 try:

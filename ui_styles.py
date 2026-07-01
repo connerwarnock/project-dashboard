@@ -87,12 +87,119 @@ def apply_warm_future_theme():
             line-height: 1.2;
         }
 
-        .warm-future-title-rule {
-            width: 52px;
-            height: 4px;
-            margin: 0.65rem 0 0.7rem;
-            border-radius: 2px;
+        .lost-nomad-motif {
+            position: relative;
+            width: 88px;
+            height: 14px;
+            margin: 0.6rem 0 0.65rem;
+        }
+
+        .lost-nomad-motif::before {
+            position: absolute;
+            right: 8px;
+            bottom: 4px;
+            left: 0;
+            height: 2px;
             background-color: var(--warm-turquoise);
+            border-radius: 2px;
+            content: "";
+        }
+
+        .lost-nomad-motif::after {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            background-color: var(--warm-pink);
+            border: 2px solid var(--warm-background);
+            border-radius: 50%;
+            content: "";
+        }
+
+        .lost-nomad-route {
+            position: absolute;
+            top: 1px;
+            left: 22px;
+            width: 28px;
+            height: 7px;
+            border-top: 1px dashed var(--warm-lavender);
+            border-right: 1px solid var(--warm-lavender);
+            border-radius: 0 5px 0 0;
+        }
+
+        .lost-nomad-motif.is-compact {
+            width: 70px;
+            margin: 0 0 0.4rem;
+        }
+
+        .lost-nomad-title-accent {
+            display: flex;
+            align-items: center;
+            width: 78px;
+            height: 12px;
+            margin: 0.6rem 0 0.65rem;
+        }
+
+        .lost-nomad-title-line {
+            width: 58px;
+            height: 2px;
+            flex: 0 0 58px;
+            background-color: var(--warm-turquoise);
+            border-radius: 2px;
+        }
+
+        .lost-nomad-title-sun {
+            width: 10px;
+            height: 10px;
+            flex: 0 0 10px;
+            margin-left: -2px;
+            box-sizing: border-box;
+            background-color: var(--warm-pink);
+            border: 2px solid var(--warm-background);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(247, 217, 122, 0.18);
+        }
+
+        .lost-nomad-title-segment {
+            width: 8px;
+            height: 2px;
+            flex: 0 0 8px;
+            margin-left: 4px;
+            background-color: var(--warm-yellow);
+            border-radius: 2px;
+            opacity: 0.72;
+        }
+
+        .lost-nomad-title-accent.is-sidebar {
+            width: 61px;
+            height: 10px;
+            margin: 0.45rem 0 0.5rem;
+        }
+
+        .lost-nomad-title-accent.is-sidebar .lost-nomad-title-line {
+            width: 44px;
+            flex-basis: 44px;
+        }
+
+        .lost-nomad-title-accent.is-sidebar .lost-nomad-title-sun {
+            width: 8px;
+            height: 8px;
+            flex-basis: 8px;
+            margin-left: -1px;
+            border-width: 1px;
+            border-color: var(--warm-surface);
+            box-shadow: 0 0 0 2px rgba(247, 217, 122, 0.14);
+        }
+
+        .lost-nomad-title-accent.is-sidebar .lost-nomad-title-segment {
+            width: 7px;
+            flex-basis: 7px;
+            margin-left: 3px;
+        }
+
+        .warm-command-center .lost-nomad-motif::after {
+            border-color: var(--warm-surface);
         }
 
         .warm-future-subtitle {
@@ -420,20 +527,19 @@ def apply_warm_future_theme():
             border-bottom: 1px solid var(--warm-border);
         }
 
+        .warm-sidebar-brand p.warm-sidebar-eyebrow {
+            margin: 0 0 0.3rem;
+            color: var(--warm-pink);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
         .warm-sidebar-brand h2 {
             margin: 0;
             color: var(--warm-text);
             font-size: 1.25rem;
             font-weight: 700;
             line-height: 1.3;
-        }
-
-        .warm-sidebar-brand-rule {
-            width: 36px;
-            height: 3px;
-            margin: 0.55rem 0 0.6rem;
-            background-color: var(--warm-turquoise);
-            border-radius: 2px;
         }
 
         .warm-sidebar-brand p {
@@ -592,7 +698,11 @@ def render_app_header(title, subtitle):
         f"""
         <div class="warm-future-header">
             <h1 class="warm-future-title">{safe_title}</h1>
-            <div class="warm-future-title-rule"></div>
+            <div class="lost-nomad-title-accent" aria-hidden="true">
+                <span class="lost-nomad-title-line"></span>
+                <span class="lost-nomad-title-sun"></span>
+                <span class="lost-nomad-title-segment"></span>
+            </div>
             <p class="warm-future-subtitle">{safe_subtitle}</p>
         </div>
         """,
@@ -604,8 +714,13 @@ def render_sidebar():
     st.sidebar.markdown(
         """
         <div class="warm-sidebar-brand">
+            <p class="warm-sidebar-eyebrow">LOST NOMAD</p>
             <h2>Project Dashboard</h2>
-            <div class="warm-sidebar-brand-rule"></div>
+            <div class="lost-nomad-title-accent is-sidebar" aria-hidden="true">
+                <span class="lost-nomad-title-line"></span>
+                <span class="lost-nomad-title-sun"></span>
+                <span class="lost-nomad-title-segment"></span>
+            </div>
             <p>Personal command center</p>
         </div>
 
@@ -651,8 +766,11 @@ def render_dashboard_hero():
         """
         <div class="warm-command-center">
             <div>
-                <h2><span class="warm-emoji-icon">📊</span> Project Command Center</h2>
-                <p>Track active work, deadlines, publishing, and next actions.</p>
+                <div class="lost-nomad-motif is-compact" aria-hidden="true">
+                    <span class="lost-nomad-route"></span>
+                </div>
+                <h2><span class="warm-emoji-icon">📊</span> Lost Nomad Project Command Center</h2>
+                <p>Tracking projects, publishing, and optimistic futures.</p>
             </div>
             <div class="warm-state-list" aria-label="Key workflow states">
                 <span class="warm-state-badge is-active">Active</span>
