@@ -115,7 +115,8 @@ full design notes.
 - Editable Projects table.
 - Editable Tasks table.
 - Editable Publishing Queue.
-- View Dashboard tab.
+- Overview is the first and default landing tab, followed by Projects, Tasks,
+  and Publish.
 - Projects Overview.
 - Stale Projects.
 - Next Actions.

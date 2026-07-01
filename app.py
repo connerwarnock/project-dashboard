@@ -46,20 +46,20 @@ last_refreshed = (
 )
 render_sidebar(last_refreshed)
 
-tab1, tab2, tab3, tab4 = st.tabs(
-    ["✏️ Edit Projects", "✅ Edit Tasks", "📰 Publishing Queue", "📊 View Dashboard"]
+overview_tab, projects_tab, tasks_tab, publish_tab = st.tabs(
+    ["📊 Overview", "📁 Projects", "✅ Tasks", "📝 Publish"]
 )
 
-with tab1:
+with overview_tab:
+    render_dashboard(projects, tasks, publishing_queue)
+
+with projects_tab:
     render_edit_projects(projects)
 
-with tab2:
+with tasks_tab:
     render_edit_tasks(projects, tasks)
 
-with tab3:
+with publish_tab:
     render_publishing_queue(projects, publishing_queue)
-
-with tab4:
-    render_dashboard(projects, tasks, publishing_queue)
 
 render_footer()
